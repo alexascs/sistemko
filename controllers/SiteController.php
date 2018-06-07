@@ -9,6 +9,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\UserVst;
 
 class SiteController extends Controller
 {
@@ -116,6 +117,28 @@ class SiteController extends Controller
         ]);
     }
 
+	
+	
+	
+	
+	public function actionAddadmin() {
+    $model = UserVst::find()->where(['username' => 'admin'])->one();
+    if (empty($model)) {
+        $user = new UserVst();
+        $user->username = 'admin';
+        $user->email = 'admin@кодер.укр';
+        $user->setPassword('admin');
+        $user->generateAuthKey();
+        if ($user->save()) {
+            echo 'good';
+        }
+    };
+	
+	
+	
+	return  'alex';
+	}
+	
     /**
      * Displays about page.
      *
@@ -125,4 +148,11 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+	
+	
+	
+	
+	
+	
+	
 }

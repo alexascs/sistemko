@@ -28,26 +28,39 @@ $this->title = 'My Yii Application';
 				//$con->active=true;
 				//…
 				//$con->active=false;  // close connection
-				$db1 = new yii\db\Connection([
-					'dsn' => 'mysql:host=vstko30147.mysql;dbname=vstko30147_sistemko',
-					'username' => 'vstko30147_1',
-					'password' => 'Alexandra21',
-					'charset' => 'utf8',
-				]);
-
+				// $db1 = new yii\db\Connection([
+				//	'dsn' => 'mysql:host=vstko30147.mysql;dbname=vstko30147_sistemko',
+				//	'username' => 'vstko30147_1',
+				//	'password' => 'Alexandra21',
+				// 'charset' => 'utf8',*/	
+				//]);
+                
+				$customer = new app\models\UserVst();
 				
-				  $posts = $db1->createCommand('SELECT * FROM alex')
-            ->queryAll();
+				$u=$customer->findIdentity(1);
+				
+				print_r($u);
+				
+				
+			//	  $posts = $db1->createCommand('SELECT * FROM alex')
+            //->queryAll();
 			
 			
-			  print_r( $posts);
+			//  print_r( $posts);
 
 				?>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+                <p>
+				
+				<? if(Yii::$app->user->isGuest){ 
+				echo 'есть гость';
+				
+				} else  {echo 'не есть гость';};
+				
+				
+				; ?>
+				
+				.</p>
 
                 <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
             </div>
