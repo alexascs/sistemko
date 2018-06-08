@@ -33,8 +33,12 @@ class m180606_143718_create_user_tableMainTable extends Migration
 		  $this->createTable('section', [
             'id' => $this->primaryKey(),
 			'name'=> $this->string(),
+			'code'=> $this->string(),
 			'xmlcode'=> $this->string(),
 			'active'=> $this->string(),
+			'idp' => $this->string(),
+			'quantity' => $this->string(),
+			 'issection' => $this->string(),
 			
 			
         ]);
@@ -43,14 +47,25 @@ class m180606_143718_create_user_tableMainTable extends Migration
 		  $this->createTable('element', [
             'id' => $this->primaryKey(),
 			'name'=> $this->string(),
+			'code'=> $this->string(),
 			'xmlcode'=> $this->string(),
 			'active'=> $this->string(),
-			
+			'idp' => $this->string(),
+			'quantity' => $this->string(),
+			'issection' => $this->string(),
+			'index1' => $this->string(),
+			'index2' => $this->string(),
+			'active' => $this->string(),
 			
         ]);
 		
 		
-		
+		 $this->createTable('price', [
+            'id' => $this->primaryKey(),
+			'elementid'=> $this->string(),			 
+			'price'=> $this->string(),
+			 
+			]);
 		
 		
 		

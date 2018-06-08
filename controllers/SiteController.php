@@ -9,7 +9,18 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
-use app\models\UserVst;
+use app\models\User;
+use app\models\SignupForm;
+
+use app\models\CatalogModel;
+use app\models\AdminModel;
+
+
+
+//use app\models\SignupForm;
+use app\models\PasswordResetRequestForm;
+use app\models\ResetPasswordForm;
+
 
 class SiteController extends Controller
 {
@@ -122,15 +133,17 @@ class SiteController extends Controller
 	
 	
 	public function actionAddadmin() {
-    $model = UserVst::find()->where(['username' => 'admin'])->one();
+    $model = User::find()->where(['username' => 'admin'])->one();
     if (empty($model)) {
-        $user = new UserVst();
+        $user = new User();
         $user->username = 'admin';
         $user->email = 'admin@кодер.укр';
         $user->setPassword('admin');
         $user->generateAuthKey();
         if ($user->save()) {
             echo 'good';
+				return  'alex';
+			
         }
     };
 	
@@ -150,9 +163,135 @@ class SiteController extends Controller
     }
 	
 	
+ 
+   
+ 
+    public function actionSignup()
+    {
+        $model = new SignupForm();
+ 
+        if ($model->load(Yii::$app->request->post())) {
+            if ($user = $model->signup()) {
+                if (Yii::$app->getUser()->login($user)) {
+                    return $this->goHome();
+                }
+            }
+        }
+ 
+        return $this->render('signup', [
+            'model' => $model,
+        ]);
+    }
+ 
+
+ 
+
 	
 	
 	
+	
+	    public function actionRequestpasswordreset()
+    {
+        $model = new PasswordResetRequestForm();
+ 
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            if ($model->sendEmail()) {
+                Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
+                return $this->goHome();
+            } else {
+                Yii::$app->session->setFlash('error', 'Sorry, we are unable to reset password for email provided.');
+            }
+        }
+ 
+        return $this->render('requestPasswordResetToken', [
+            'model' => $model,
+        ]);
+    }
+ 
+    /**
+     * Resets password.
+     *
+     * @param string $token
+     * @return mixed
+     * @throws BadRequestHttpException
+     */
+    public function actionResetPassword($token)
+    {
+        try {
+            $model = new ResetPasswordForm($token);
+        } catch (InvalidParamException $e) {
+            throw new BadRequestHttpException($e->getMessage());
+        }
+ 
+        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
+            Yii::$app->session->setFlash('success', 'New password was saved.');
+            return $this->goHome();
+        }
+ 
+        return $this->render('resetPassword', [
+            'model' => $model,
+      ]);
+	  }
+ 
+
+	 public function actionCatalog()
+    {
+				
+		
+		if (Yii::$app->request->isGet) {
+			
+	
+			 $model=new CatalogModel();
+				
+	
+			if ($model->load(Yii::$app->request->get()) && $model->validate()) {
+			   
+						   
+			};
+			
+		   return $this->render('catalog', [
+           'model' => $model,
+			]);
+			
+		
+	   
+		
+		};
+		
+		
+        return "second";
+    }
+	
+	
+	 public function actionAdminsite()
+    {
+				
+		
+		 	 $model=new AdminModel();
+			
+		   return $this->render('adminsite', [
+         'model' => $model,
+			]);
+			
+		
+	   
+    }
+	
+	//uploade nim from csv file
+	 public function actionUploadenom()
+    {
+				
+		
+		 $model=new AdminModel();
+		 $model->Uploadenom();
+			
+		   return $this->render('adminsite', [
+         'model' => $model,
+			]);
+			
+		
+	   
+    }
 	
 	
 }
