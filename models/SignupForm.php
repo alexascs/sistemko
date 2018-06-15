@@ -13,7 +13,10 @@ namespace app\models;
         public $username;
         public $email;
         public $password;
-     
+        public $adress;
+		public $phone;
+	 
+	 
         /**
          * @inheritdoc
          */
@@ -31,6 +34,11 @@ namespace app\models;
                 ['email', 'unique', 'targetClass' => '\app\models\User', 'message' => 'This email address has already been taken.'],
                 ['password', 'required'],
                 ['password', 'string', 'min' => 6],
+				
+				 ['adress', 'string', 'max' => 255],
+				 ['phone', 'string', 'max' => 255],
+				
+				
             ];
         }
      
@@ -48,6 +56,9 @@ namespace app\models;
      
             $user = new User();
             $user->username = $this->username;
+			  $user->phone = $this->phone;
+			    $user->adress = $this->adress;
+			  
             $user->email = $this->email;
             $user->setPassword($this->password);
             $user->generateAuthKey();

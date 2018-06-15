@@ -38,17 +38,29 @@ AppAsset::register($this);
 ]);
  
 $menuItems = [
-      ['label' => 'Админ', 'url' => [$url = Url::to(['site/adminsite'])]],
-    ['label' => 'Каталог', 'url' => [$url = Url::to(['site/catalog', 'section' => 'main', 'element'=> 'main'])]],                                            // $url = Url::to(['post/view', 'id' => 100]);
-    ['label' => 'Главная', 'url' => ['/site/index']],
+    ['label' => 'Админ', 'url' => [$url = Url::to(['site/adminsite'])]],
+   
+  ['label' => 'Каталог', 'url' => [$url = Url::to(['catalog/index', ])]],  ////(['catalog/index', 'section' => 'main', 'element'=> 'main'])]],            // $url = Url::to(['post/view', 'id' => 100]);
+
+//['label' => 'Каталог', 'url' => [$url = Url::to(['catalog/index', 'section' => 'main', 'element'=> 'main' ])]], 
+   ['label' => 'Главная', 'url' => ['/site/index']],
     ['label' => 'О компании', 'url' => ['/site/about']],
     ['label' => 'Контакты ', 'url' => ['/site/contact']],
+	 
+ 
 ];
  
 if (Yii::$app->user->isGuest) {
     $menuItems[] = ['label' => 'Регистрация', 'url' => ['/site/signup']];
     $menuItems[] = ['label' => 'Войти', 'url' => ['/site/login']];
+	  
+	 
+	
 } else {
+	
+	 $menuItems[] =['label' => 'Заказы', 'url' => [Url::to(['site/zakaz'])]];
+	 $menuItems[] =['label' => 'Корзина', 'url' => [Url::to(['site/basket'])]];
+	
     $menuItems[] = '<li>'
         . Html::beginForm(['/site/logout'], 'post')
         . Html::submitButton(

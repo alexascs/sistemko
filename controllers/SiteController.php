@@ -14,13 +14,14 @@ use app\models\SignupForm;
 
 use app\models\CatalogModel;
 use app\models\AdminModel;
-
+use app\models\AjaxModel;
 
 
 //use app\models\SignupForm;
 use app\models\PasswordResetRequestForm;
 use app\models\ResetPasswordForm;
-
+use app\models\BasketModel;
+use app\models\ZakazModel;
 
 class SiteController extends Controller
 {
@@ -139,6 +140,8 @@ class SiteController extends Controller
         $user->username = 'admin';
         $user->email = 'admin@кодер.укр';
         $user->setPassword('admin');
+		$user->phone="";
+		$user->adress="";
         $user->generateAuthKey();
         if ($user->save()) {
             echo 'good';
@@ -280,12 +283,72 @@ class SiteController extends Controller
 	//uploade nim from csv file
 	 public function actionUploadenom()
     {
-				
+			$this->layout = 'ajaxl';	
 		
-		 $model=new AdminModel();
-		 $model->Uploadenom();
+		 $model_admin=new AdminModel();
+		 $model_admin->Uploadenom();
+		 
+		  $model=new AjaxModel();
+		  
+		  $model->message=$model_admin->message;
+		  
 			
-		   return $this->render('adminsite', [
+		   return $this->render('ajaxv', [
+         'model' => $model,
+			]);
+			
+		
+	   
+    }
+	
+	
+	
+	 public function actionMakesection()
+    {
+			$this->layout = 'ajaxl';	
+		
+		 $model_admin=new AdminModel();
+		 $model_admin->MakeSections();
+		 
+		  $model=new AjaxModel();
+		  
+		  $model->message=$model_admin->message;
+		  
+			
+		   return $this->render('ajaxv', [
+         'model' => $model,
+			]);
+			
+		
+	   
+    }
+	
+	
+	
+	
+	 public function actionBasket()
+    {
+			//$this->layout = 'ajaxl';	
+		
+		 $model= new BasketModel();	  
+		  
+			
+		   return $this->render('basket', [
+         'model' => $model,
+			]);
+			
+		
+	   
+    }
+	
+	 public function actionZakaz()
+    {
+			//$this->layout = 'ajaxl';	
+		
+		 $model= new ZakazModel();	  
+		  
+			
+		   return $this->render('zakaz', [
          'model' => $model,
 			]);
 			

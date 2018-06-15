@@ -7,13 +7,13 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
-$this->title = 'Login';
+$this->title = 'Вход';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-login">
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>Please fill out the following fields to login:</p>
+    <p>Для входа на сайт просим ввести ваш логин и пароль указанный при регистрации:</p>
 
     <?php $form = ActiveForm::begin([
         'id' => 'login-form',
@@ -24,13 +24,13 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
 
-        <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+        <?= $form->field($model, 'username')->textInput(['autofocus' => true])->label('логин') ?>
 
-        <?= $form->field($model, 'password')->passwordInput() ?>
+        <?= $form->field($model, 'password')->passwordInput()->label('пароль') ?>
 
         <?= $form->field($model, 'rememberMe')->checkbox([
             'template' => "<div class=\"col-lg-offset-1 col-lg-3\">{input} {label}</div>\n<div class=\"col-lg-8\">{error}</div>",
-        ]) ?>
+        ])->label('Помнить меня') ?>
 
         <div class="form-group">
             <div class="col-lg-offset-1 col-lg-11">
@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="col-lg-offset-1" style="color:#999;">
 	
 	    <div>
-        If you forgot your password you can <?= Html::a('reset it', ['site/requestpasswordreset']) ?>.
+        Если вы забыли пароль вы можете  <?= Html::a('его восстановить', ['site/requestpasswordreset']) ?>.
     </div>
      
     </div>

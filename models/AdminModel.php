@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use app\models\Element;
+use app\models\Section;
 
 /**
  * ContactForm is the model behind the contact form.
@@ -57,7 +58,9 @@ class AdminModel extends Model
 			 $el->code=ltrim($ar[1]);
 			 $el->xmlcode="";
 			 $el->active=ltrim($ar[3]);
-			 $el->idp =ltrim($ar[5]);
+			  $el->idp ='';
+			  $el->codep =ltrim($ar[5]);
+			 
 			 $el->quantity ='0';
 			 $el->issection =ltrim($ar[3]);
 			 $el->index1 ="";
@@ -71,6 +74,11 @@ class AdminModel extends Model
 		
 	}
 	
+	//we process the file from server  file is in csv file format 
+	//every string of file must heve next column name  
+     //Наименование	   Код  	Артикул	  'Это группа'	'Входит в группу'	'Код'	'Номенклатурная группа'	'Код'
+	 
+	 
 	
 	 public function Uploadenom()
      {
@@ -80,12 +88,12 @@ class AdminModel extends Model
 					
 					
 					$count=0;
-					
+					$mes="";
 
 					 if ($fp) 
 					  {
 						 while (!feof($fp))
-						 {     // $count=$count+1; if($count==20){break;};
+						 {      $count=$count+1; //if($count==20){break;};
 						 $mytext = fgets($fp, 999);
 						 
 						 $ar=str_getcsv ($mytext,";");
@@ -97,21 +105,96 @@ class AdminModel extends Model
 						 // foreach(   $ar  as $t=>$r ){  $mes=$mes.'  '.$r.'  '.' = '.$t.' ';     };
 						 
 						 
-						 //$mes=$mes.$imes."<br />";
+						 $mes=$mes.$count."<br />";
 						 }
 					   }
 					  else $mes="Ошибка при открытии файла";
 					  fclose($fp);
 		 
 		 
+		 $this->MakeSections();
 		 
-		 
-		 $this->message= $mes;
+		  $this->message=$this->message.$mes;
 		 
 		 
 		 
 		 
      }
+	
+	
+	public function procceccElementForSection($el){
+			$mes=$el->code ;
+		
+			$section = Section::find()
+    ->where(['code' =>ltrim(  $el->code  )])
+    ->one();
+	
+	if(!$section){
+		
+		$section=new Section();
+		   $section->name= $el->code;
+			 $section->code= $el->code;
+			 $section->xmlcode=$el->xmlcode;
+			 $section->active=$el->active;
+			  $section->idp =$el->idp ;
+			  $section->codep =$el->codep;
+			 
+			// $el->quantity ='0';
+		     $section->issection = $el->issection;
+			 $section->index1 = $el->index1;
+			 $section->index2 =$el->index2;
+			 
+		$section->save();
+		
+		
+	};
+		
+		  $this->message=$this->message.$mes;
+		
+	}
+	
+	
+	
+	 public function MakeSections()
+     {   $mes="MakeSections<br>";
+	 
+	 
+	 
+    //     	$elements = Element::find()
+	//		//->where( ['issection' =>ltrim('Да')])
+   // ->all();
+	
+	$elements = Element::find()
+	->where( ['issection' =>ltrim('Да')])
+    ->indexBy('id')
+    ->all();
+	
+	
+	if(isset($elements)){
+		
+		$counter=0;
+		 foreach($elements  as $k=>$element)
+		 {
+			 
+	   $counter=$counter+1;
+		 
+		 $this->procceccElementForSection($element);
+	 
+		
+		$mes=$mes.$counter.$element->code.'<br>';//    .$$element->code.'<br>';
+		
+		
+	};
+		
+		 
+		 
+		
+		 
+     }
+	  $this->message=$this->message.$mes;
+	 }
+	 
+	
 	
      
 }

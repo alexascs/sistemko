@@ -49,9 +49,16 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-			'catalog' => 'site/index',
+				'catalog/'=>'catalog/index', 
 			
-			'site/catalog/<section>/<element>'=>'site/catalog',
+			//'site/index/<section>/<element>'=>'catalog/index', 
+			
+			//'catalog/<section>/<element>'=>'catalog', 
+			
+			//'catalog' => 'catalog/index',
+			//'catalog/index' => 'catalog/index', 
+			//'catalog/index/<section>/<element>'=>'catalog/index', 
+			'catalog/index/<section>/<element>/<page>'=>'catalog/', 
             ],
         ],
        

@@ -24,6 +24,9 @@ class m180606_143718_create_user_tableMainTable extends Migration
             'status' => $this->smallInteger()->notNull()->defaultValue(10),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
+			'phone' => $this->string(),
+			'adress' => $this->string(),
+			
         ], $tableOptions);
 		
 		
@@ -31,14 +34,18 @@ class m180606_143718_create_user_tableMainTable extends Migration
 		
 		
 		  $this->createTable('section', [
-            'id' => $this->primaryKey(),
+           'id' => $this->primaryKey(),
 			'name'=> $this->string(),
 			'code'=> $this->string(),
 			'xmlcode'=> $this->string(),
 			'active'=> $this->string(),
+			'codep' => $this->string(),
 			'idp' => $this->string(),
-			'quantity' => $this->string(),
-			 'issection' => $this->string(),
+			 
+			'issection' => $this->string(),
+			'index1' => $this->string(),
+			'index2' => $this->string(),
+			'active' => $this->string(),
 			
 			
         ]);
@@ -50,6 +57,7 @@ class m180606_143718_create_user_tableMainTable extends Migration
 			'code'=> $this->string(),
 			'xmlcode'=> $this->string(),
 			'active'=> $this->string(),
+			'codep' => $this->string(),
 			'idp' => $this->string(),
 			'quantity' => $this->string(),
 			'issection' => $this->string(),
@@ -66,6 +74,49 @@ class m180606_143718_create_user_tableMainTable extends Migration
 			'price'=> $this->string(),
 			 
 			]);
+		
+		
+		
+		
+		
+		
+		
+		  $this->createTable('bascet', [
+            
+			'id' => $this->primaryKey(),
+			'userid'=> $this->string(),
+			'elementid'=> $this->string(),
+			'price'=> $this->string(),
+			'sum'=> $this->string(),
+			'quantity'=> $this->string(),
+			'zakazid'=> $this->string(),
+			'order'=> $this->boolean(), 
+			
+			
+        ]);
+		
+		
+		
+			  $this->createTable('zakaz', [
+            
+			'id' => $this->primaryKey(),
+			'userid'=> $this->string(),
+			 'summ'=> $this->string(),
+			 
+			
+			
+        ]);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		

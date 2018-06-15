@@ -4,15 +4,15 @@
 
 use yii\helpers\Html;
 
-$this->title = 'Каталог';
+$this->title = 'Заказы';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-catalog">
+<div class="site-about">
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        КАТАЛОГ ТОВАРОВ  
+       ваши заказы
     </p>
 
-    <code><//?= __FILE__ ?></code>
+     <code><?//= __FILE__ ?></code>
 </div>
