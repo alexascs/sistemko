@@ -75,7 +75,7 @@ class m180606_143718_create_user_tableMainTable extends Migration
 			 
 			]);
 		
-		
+		 
 		
 		
 		
@@ -111,13 +111,31 @@ class m180606_143718_create_user_tableMainTable extends Migration
 		
 		
 		
+			  $this->createTable('cache', [
+            
+			'id' =>$this->char(128)->notNull(),//'id' =>$this->char(128)->primaryKey()->notNull(), 
+			'expire'=> $this->integer(11),
+			 'data'=> $this->binary(429496729),
+			 
+			 
+			
+        ]);
+		
+		
+				// $this->alterColumn(
+			   // 'cache',
+				// 'id',
+				// 'PRIMARY KEY'
+				// );
+		
+		///'NOT NULL AUTO_INCREMENT PRIMARY KEY'
 		
 		
 		
+		Yii::$app->db->createCommand('ALTER TABLE cache  ADD PRIMARY KEY(id)')
+       ->queryScalar();
 		
-		
-		
-		
+		//this->execute("ALTER TABLE cache  ADD PRIMARY KEY(id)");
 		
 		
     }
@@ -129,8 +147,9 @@ class m180606_143718_create_user_tableMainTable extends Migration
     {
         $this->dropTable('user');
 		 $this->dropTable('section');
-		  $this->dropTable('element');
+		  $this->dropTable('element');		 
+		 $this->dropTable('zakaz');
+		 	 $this->dropTable('bascet');
 		 
-		
     }
 }

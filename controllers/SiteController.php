@@ -325,6 +325,29 @@ class SiteController extends Controller
 	
 	
 	
+		 public function actionFillidpforsection()
+    {
+			$this->layout = 'ajaxl';	
+		
+		     $model_admin=new AdminModel();
+		     $model_admin->fillidpInSectionTable();
+		 
+		  $model=new AjaxModel();
+		  
+		  $model->message=$model_admin->message;
+		  
+			
+		   return $this->render('ajaxv', [
+         'model' => $model,
+			]);
+			
+		
+	   
+    }
+	
+	
+	
+	
 	
 	 public function actionBasket()
     {
@@ -355,6 +378,32 @@ class SiteController extends Controller
 		
 	   
     }
+	
+	
+	 
+	/////clear  cach yii\caching\Cache::flush().
+	
+	
+	
+	 public function actionCleancache() 
+    {
+			$this->layout = 'ajaxl';	
+		
+		      Yii::$app->cache->flush();
+		 
+		      $model=new AjaxModel();
+		  
+		     $model->message="cach is clean";
+		  
+			
+		   return $this->render('ajaxv', [
+         'model' => $model,
+			]);
+			 
+		
+	   
+    }
+	
 	
 	
 }

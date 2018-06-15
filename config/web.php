@@ -17,9 +17,11 @@ $config = [
             'cookieValidationKey' => 'Alex21',
 			'baseUrl'=> '',
         ],
-        'cache' => [
-            'class' => 'yii\caching\FileCache',
-        ],
+        'cache' => [ 
+             'class' => 'yii\caching\DbCache',
+             // 'db' => 'mydb',
+             // 'cacheTable' => 'my_cache',
+         ],
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,

@@ -28,6 +28,17 @@ $this->params['breadcrumbs'][] = $this->title;
 	
 	
 	
+		
+	<p><div class="btn btn-default"  id="btn_site_fillidpforsection"  onclick='btn_site_fillidpforsection()'        >создать idp для секций </div></p>
+
+	
+		<p><div class="btn btn-default"  id="btn_site_cleancache"  onclick='btn_site_cleancache()'        >очистка кэша </div></p>
+		
+		
+		
+		
+		
+	
     <code><//?= __FILE__ ?></code>
 </div>
 <script>
@@ -57,6 +68,37 @@ function btn_site_makesection() {
     }
   };
   xhttp.open("GET", "<?=Url::to(['site/makesection']) ?>", true);
+  xhttp.send();
+
+ console.log("секции ")
+}
+
+
+function btn_site_fillidpforsection() {
+    
+
+   var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+   if (this.readyState == 4 && this.status == 200) {
+      mes( this.responseText);
+    }
+  };
+  xhttp.open("GET", "<?=Url::to(['site/fillidpforsection']) ?>", true);
+  xhttp.send();
+
+ console.log("секции ")
+}
+
+function btn_site_Clearсache() {
+    
+
+   var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+   if (this.readyState == 4 && this.status == 200) {
+      mes( this.responseText);
+    }
+  };
+  xhttp.open("GET", "<?=Url::to(['site/cleancache']) ?>", true);
   xhttp.send();
 
  console.log("секции ")

@@ -9,6 +9,13 @@ use app\models\Section;
 
 /**
  * ContactForm is the model behind the contact form.
+ loade element table
+ 
+ after make section table
+ after fill idp in section table
+ 
+ 
+ 
  */
 class AdminModel extends Model
 {
@@ -114,6 +121,12 @@ class AdminModel extends Model
 		 
 		 $this->MakeSections();
 		 
+		 
+		 $this->fillidpInSectionTable();
+		 
+	
+	
+		 
 		  $this->message=$this->message.$mes;
 		 
 		 
@@ -132,7 +145,7 @@ class AdminModel extends Model
 	if(!$section){
 		
 		$section=new Section();
-		   $section->name= $el->code;
+		   $section->name= $el->name;
 			 $section->code= $el->code;
 			 $section->xmlcode=$el->xmlcode;
 			 $section->active=$el->active;
@@ -194,6 +207,74 @@ class AdminModel extends Model
 	  $this->message=$this->message.$mes;
 	 }
 	 
+	
+	////fillidpInSectionTable
+	
+	
+	
+	
+	
+	 public function fillidpInSectionTable()
+     {   
+	 
+	 
+	     $mes="fillidpInSectionTable<br>"; 
+	 
+	 
+	  
+	 
+	 
+		$sections = Section::find()
+         // ->where(['code' =>ltrim(  $el->code  )])
+         ->all();
+	
+	     //array
+		foreach($sections  as  $section ){
+			
+			if(isset($section->codep)){
+				
+				$sectionsp = Section::find()
+                 ->where(['code' =>$section->codep])
+                 ->one();
+				 
+				 if(isset($sectionsp)){
+					 
+					 
+					 $mes=$mes."  we finde <br>";
+					 
+					 $section->idp=$sectionsp->id;
+					 
+					 $section->save();
+					 
+				 };
+				
+				
+				
+			};
+			
+			
+			
+			
+			$mes=$mes."   idp ".$section->codep.'  <br>';
+			//we have the one section class.
+			
+			
+			
+			
+		};
+		
+		
+	
+		
+   
+	 
+	 
+	 
+	 
+	  $this->message=$this->message.$mes;
+	 }
+	
+	
 	
 	
      
