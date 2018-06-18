@@ -14,26 +14,30 @@ class CatalogModel extends Model
 {   
     
 	
-	public $elementPerPage;
-	public $quantityElementInTable;
+	public $elementPerPage;	 
+	 
+	public  $quantityPageForCurSection;
 	
     public $message;
 	
     public  $section;
     public  $element;
-    public  $pagen;
+    public  $page;
 	
-	public $sa;////
+ 
 	
 	private $id_tovar;///the main   grup  tovar;
 	
-	private $tableSections;
-	private $tableElements;
+	//private $tableSections;
+	//private $tableElements;
 	
 	
 	public   $arrElements; 
-    public    $arrSectioons;
-	public   $arrSectioonsCurSection; // we need iit for quick  select elemet from element table 
+    public   $arrSectioons;
+	public   $TopArrCurSection; // we need for every request fo curient section
+	public   $BottomArrCurSection; 
+	//public   $BottomArrCurSectionArr;
+	
 	
     public  $arrPages;
 
@@ -43,7 +47,7 @@ class CatalogModel extends Model
         return [
        
           
-		      [['title', 'element', 'pagen'], 'safe'],
+		      [['title', 'element', 'page'], 'safe'],
 		  
 		  
 		  
@@ -56,18 +60,18 @@ class CatalogModel extends Model
 	
 			public function scenarios()
 	{
-			$scenarios['default'] = ['section', 'element', 'pagen'];
+			$scenarios['default'] = ['section', 'element', 'page'];
 			
 			return $scenarios;
 	}
 	
        ///data for view arrSectioons  
 		  public function fillarrSectioons()
-			{ $mes='<br>fillarrSectioons  <br>';
+			{ //$mes='<br>fillarrSectioons  <br>';
 				 
-				
+				 
 					$this->arrSectioons = Yii::$app->cache->get("arrSectioons");
-			           $mes=$mes.' array'.$this->arrSectioons.' <br> ';
+			          // $mes=$mes.' array'.$this->arrSectioons.' <br> ';
 
 						if ($this->arrSectioons === false) {
 						
@@ -76,15 +80,18 @@ class CatalogModel extends Model
 						$mes=$mes."00000000001 al = id ".$this->id_tovar.'<br>';
 			
 						
-						//$starArray=$this->getStartArrayForSections($this->id_tovar);
+						;
                              
-						   $treeArray=array();
-						   
-						   $treeArray[$this->id_tovar]= $this->makeTreeForSection ($this->id_tovar);
+						 
 						 
 						   
+						   $treeArray=$this->makeTreeForSection ($this->id_tovar);
+						 
+						   $this->arrSectioons=$treeArray;
 						    
-						  Yii::$app->cache->set('arrSectioons', $treeArray);
+							//print_r( $treeArray); 
+							
+						  //Yii::$app->cache->set('arrSectioons', $treeArray);
 				        }
 				
 				
@@ -93,31 +100,71 @@ class CatalogModel extends Model
 			}
 			
 			
+			
+			
+			
             ///data for view arrElements 
 		   public function fillarrElements()
-			{ 
+			{ $this->arrElements=[];
 				 //we need element only for our group
+				 
+				 $this->BottomArrCurSection[]=intval((trim($this->section)));
+				 $rt=intval((trim($this->section)));
+				 $mainArray=Array();
+				 //$mainArray[]=0;
+				// $mainArray[]=19;
+				 
+				// echo gettype(BottomArrCurSection[0]) ;
+				//  echo gettype(BottomArrCurSection[1]) ;
+				 	 //echo gettype( $rt) ;
 				 
 				 
 				//finde all chaild of id.
-		         $sections = Element::find()
-				 ->orderBy("name")
+		         $elements = Element::find()
+				  ->where(['idp' =>$this->BottomArrCurSection ,'issection' =>false]) 
+				 ->orderBy("name")				
+				 ->offset( intval( $this->page)*$this->elementPerPage)
+				  ->limit(intval($this->elementPerPage))
 				 //->where(['idp' =>ltrim(  $startCode )])
 				 ->all();
 				
 				
+				//print_r($this->BottomArrCurSection);        
 				
 				
+				
+				foreach($elements as $element){
+					$idArray=Array();
+							//echo $element->id;
+						
+                         //we do not make the tree in this function
+						// echo 'ffff <br>';
+						$idArray[ 'id']= $element->id;
+						$idArray[ 'name']= $element->name;
+						$idArray[ 'index1']= $element->index1;
+						$idArray[ 'index2']= $element->index2;
+						$idArray[ 'idp']= $element->idp;
+						$idArray[ 'childArray']= '';  ///$this->makeTreeForSection($section->id);
+						$this->arrElements[]=$idArray;
+				};
+				
+			
+			
 				
 			}
  
-          
+         
+		  
+		  
+		  
+		  
+		  
         public  function  makeTreeForSection ($startCode)
-		 { 
+		 {      // $mes='<br>fillarrSectioons  <br>';
 		  
 		        
-				$inArray=Array();
-				
+				$childArray=Array();
+				$mainArray=Array();
 				
 				 //finde all chaild of id.
 		         $sections = Section::find()
@@ -128,9 +175,20 @@ class CatalogModel extends Model
 		 
 		                if(!$sections) {return;};
 		 
-					    foreach($sections  as  $section ){							 
+					    foreach($sections  as  $section ){
+							///id array;
+							$idArray=Array();
+							
+						
 
-						$inArray[ $section->id]=$this->makeTreeForSection($section->id);
+						$idArray[ 'id']= $section->id;
+						$idArray[ 'name']= $section->name;
+						$idArray[ 'index1']= $section->index1;
+						$idArray[ 'index2']= $section->index2;
+						$idArray[ 'idp']= $section->idp;
+						$idArray[ 'childArray']= $this->makeTreeForSection($section->id);
+						
+						$mainArray[]=$idArray;
                              
 						$this->message=$this->message.$section->id.'<br>';
 								 
@@ -139,10 +197,10 @@ class CatalogModel extends Model
 		 
 		 
 	 
-			 
+			 $childArray[$startCode]=$mainArray;
 			
 			
-			return $inArray;
+			return $childArray;
 			
 		 }
  
@@ -177,4 +235,174 @@ class CatalogModel extends Model
 			}
  
  
+ 
+ 
+ 
+ 
+ 
+			public function fillTopArrCurSection(){
+				
+				///make  key for the section
+				
+				$key="top_section_".$this->section;
+				
+				
+				$this->TopArrCurSection = Yii::$app->cache->get($key);
+			          
+             
+						if ($this->TopArrCurSection === false) {
+						
+									 
+									
+									$this->getParentsForSection($this->section);
+									
+								
+								
+									   
+									//$this->TopArrCurSection=$inArray;
+
+									//Yii::$app->cache->set($key, $treeArray);
+				        }
+				
+				
+				
+				
+			}
+ 
+             public function getParentsForSection($sectionId){
+				 
+				 
+				 
+				//$inArray=Array();
+				 //it is curient section if we have the id we have the section
+				// if(isset($sectionId)){  };
+				 
+				 $this->TopArrCurSection[]=intval($sectionId) ;
+				//echo($sectionId );
+				  return;
+				 
+				  $section = Section::find()
+                  ->where(['id' =>$sectionId ])
+                  ->one();
+				  
+				 if(!$section){return;};
+				  
+				  $this->TopArrCurSection[]=$sectionId ;
+				  
+			       $this->getParentsForSection($section->idp);
+				 
+				 
+				// return $inArray; 
+				 
+				 
+				 
+			 }
+
+
+		   public function fillBottomArrCurSection()
+		   
+		   {	///make  key for the section
+				
+				$key="botton_section_".$this->section;
+				
+				 
+				$this->BottomArrCurSection = Yii::$app->cache->get($key);
+			      
+
+						if ($this->BottomArrCurSection === false) {
+						
+									
+									
+									
+									
+
+									
+                                       $this->getChildrenForSection($this->section);
+									   
+									   
+									//$this->BottomArrCurSection=$inArray;
+
+									//Yii::$app->cache->set($key, $treeArray);
+				        }
+				
+				
+			   
+			   
+			   
+			   
+			   
+			   
+		   }
+		   
+  public function  getChildrenForSection($sectionId){
+   
+   	 	//$this->BottomArrCurSection[]=$section->id;
+				 //it is curient section if we have the id we have the section
+				 
+				 //$childArray=Array();
+				$this->BottomArrCurSection[]=intval($section->id);
+				 
+				  $sections = Section::find()
+                  ->where(['idp' =>$sectionId ])
+                  ->all();
+				  
+				 if(!$sections){return;};
+				  
+				foreach($sections as $section ){
+					 //$inArray=Array();
+					// $inArray['id']=[$section->id];
+					// $inArray['idchildren']=$this->getChildrenForSection($section->id);
+					
+					//$childArray[]= $inArray;
+					
+					$this->BottomArrCurSection[]=intval($section->id);
+					$this->getChildrenForSection($section->id);
+					
+				};
+				  
+				  
+				 
+				 
+				 return $childArray;
+				 
+				 
+				 
+			 }
+   
+   
+  
+  
+ 
+     
+	 
+
+	  
+	  
+	  
+	 
+ public function fillQuantitypageforqurientsection(){
+	
+
+               $count = Element::find()//->where(['idp' =>$this->BottomArrCurSection  ])->count();
+        ->where(['idp' =>$this->BottomArrCurSection ,'issection' =>false]) 
+				// ->orderBy("name")				
+				 //->offset(100)
+				 // ->limit($this->elementPerPage)
+				 //->where(['idp' =>ltrim(  $startCode )])
+			
+         ->count();
+		 
+		   
+		   
+	 $this->quantityPageForCurSection= ceil(  $count/$this->elementPerPage);
+	 //$this->quantityPageForCurSection= ceil(  $count/$this->elementPerPage);
+
+	 //$this->quantityPageForCurSection= ceil(  $count/intval($this->elementPerPage));
+	 
+	 
+ }
+  
+
+
+
 }

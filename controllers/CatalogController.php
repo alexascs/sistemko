@@ -24,12 +24,20 @@ class CatalogController extends Controller
     {
 		$model=new CatalogModel();
 		//$model->scenario = 'default';
-		 $model->elementPerPage=50;
-		
+		 $model->elementPerPage=20;
+		 $model->quantityPageForCurSection=1;
 		 
 		$model->load(Yii::$app->request->get(),'');
 		
+		//main array of sections   
 	    $model->fillarrSectioons();
+		
+		
+		//top section for curient sectio
+		$model->fillTopArrCurSection(); 
+	   
+	   $model->fillBottomArrCurSection();
+		$model->fillQuantitypageforqurientsection();
 		   
 	    $model->fillarrElements();
 			

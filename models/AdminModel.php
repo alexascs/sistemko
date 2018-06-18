@@ -64,15 +64,27 @@ class AdminModel extends Model
 		   $el->name= ltrim($ar[0]);
 			 $el->code=ltrim($ar[1]);
 			 $el->xmlcode="";
-			 $el->active=ltrim($ar[3]);
-			  $el->idp ='';
+			 $el->active=true;//ltrim($ar[3]);
+			  //$el->idp ='';
 			  $el->codep =ltrim($ar[5]);
 			 
-			 $el->quantity ='0';
-			 $el->issection =ltrim($ar[3]);
-			 $el->index1 ="";
-			 $el->index2 ="";
-			 $el->active ="";
+			 $el->quantity =0;
+			 
+			 $isSection=ltrim($ar[3]);
+			 if($isSection=="Нет"){
+				 $el->issection =false;	  
+				 }else{
+					 $el->issection=true; 
+					 
+					 }
+					 
+			
+			
+			 
+			 //$el->issection =ltrim($ar[3]);
+			 //$el->index1 ="";
+			 //$el->index2 ="";
+			// $el->active ="";
 		$el->save();
 		
 		
@@ -178,7 +190,7 @@ class AdminModel extends Model
    // ->all();
 	
 	$elements = Element::find()
-	->where( ['issection' =>ltrim('Да')])
+	->where( ['issection' =>true])
     ->indexBy('id')
     ->all();
 	
@@ -225,13 +237,18 @@ class AdminModel extends Model
 	 
 	 
 		$sections = Section::find()
-         // ->where(['code' =>ltrim(  $el->code  )])
+        //  ->where(['code' =>ltrim(  $el->code  )])
          ->all();
 	
 	     //array
 		foreach($sections  as  $section ){
 			
+
+			$mes=$mes."  we finde <br>".$section->codep;
+			
 			if(isset($section->codep)){
+				
+		
 				
 				$sectionsp = Section::find()
                  ->where(['code' =>$section->codep])
@@ -240,7 +257,7 @@ class AdminModel extends Model
 				 if(isset($sectionsp)){
 					 
 					 
-					 $mes=$mes."  we finde <br>";
+					 //$mes=$mes."  we finde <br>";
 					 
 					 $section->idp=$sectionsp->id;
 					 
@@ -252,16 +269,56 @@ class AdminModel extends Model
 				
 			};
 			
+			  $this->message=$this->message.$mes;
+		
+			
+		}
+			
+	 
+		$elements = Element::find()
+          ->where(['issection' =>false])	  
+         ->all();
+	
+	     //array
+		foreach($elements  as  $element ){
+			
+		//	if(isset($element->codep)){
+				
+				$sectionsp = Section::find()
+                 ->where(['code' =>$element->codep])
+                 ->one();
+				 
+				//if(isset($sectionsp)){
+					 
+					 
+					// $mes=$mes."  we finde <br>";
+					 
+					 $element->idp=$sectionsp->id;
+					 
+					 $element->save();
+					 
+			// };
+				
+				
+				
+			};
 			
 			
 			
-			$mes=$mes."   idp ".$section->codep.'  <br>';
+			
+			
+			
+			
+			
+			
+			
+			//$mes=$mes."   idp ".$section->codep.'  <br>';
 			//we have the one section class.
 			
 			
 			
 			
-		};
+		//};
 		
 		
 	
@@ -279,3 +336,5 @@ class AdminModel extends Model
 	
      
 }
+
+

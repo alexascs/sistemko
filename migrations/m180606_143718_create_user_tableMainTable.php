@@ -38,14 +38,14 @@ class m180606_143718_create_user_tableMainTable extends Migration
 			'name'=> $this->string(),
 			'code'=> $this->string(),
 			'xmlcode'=> $this->string(),
-			'active'=> $this->string(),
+			'active'=> $this->boolean(),
 			'codep' => $this->string(),
-			'idp' => $this->string(),
+			'idp' => $this->integer(),
 			 
-			'issection' => $this->string(),
-			'index1' => $this->string(),
+			'issection' => $this->boolean(),
+			'index1' => $this->integer(),
 			'index2' => $this->string(),
-			'active' => $this->string(),
+			'active' => $this->boolean(),
 			
 			
         ]);
@@ -56,14 +56,14 @@ class m180606_143718_create_user_tableMainTable extends Migration
 			'name'=> $this->string(),
 			'code'=> $this->string(),
 			'xmlcode'=> $this->string(),
-			'active'=> $this->string(),
+			'active'=> $this->boolean(),
 			'codep' => $this->string(),
-			'idp' => $this->string(),
-			'quantity' => $this->string(),
-			'issection' => $this->string(),
-			'index1' => $this->string(),
+			'idp' => $this->integer(),
+			'quantity' => $this->float(),
+			'issection' => $this->boolean(),
+			'index1' => $this->integer(),
 			'index2' => $this->string(),
-			'active' => $this->string(),
+			'active' => $this->boolean(),
 			
         ]);
 		
@@ -84,14 +84,14 @@ class m180606_143718_create_user_tableMainTable extends Migration
 		  $this->createTable('bascet', [
             
 			'id' => $this->primaryKey(),
-			'userid'=> $this->string(),
-			'elementid'=> $this->string(),
-			'price'=> $this->string(),
-			'sum'=> $this->string(),
-			'quantity'=> $this->string(),
+			'userid'=> $this->integer(),
+			'elementid'=> $this->integer(),
+			'price'=> $this->integer(),
+			'sum'=> $this->float(),
+			'quantity'=> $this->float(),
 			'zakazid'=> $this->string(),
 			'order'=> $this->boolean(), 
-			
+			'price'=> $this->float(), 
 			
         ]);
 		

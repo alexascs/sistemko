@@ -89,7 +89,7 @@ function btn_site_fillidpforsection() {
  console.log("секции ")
 }
 
-function btn_site_Clearсache() {
+function btn_site_cleancache() {
     
 
    var xhttp = new XMLHttpRequest();
