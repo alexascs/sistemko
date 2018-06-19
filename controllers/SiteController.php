@@ -14,7 +14,7 @@ use app\models\SignupForm;
 
 use app\models\CatalogModel;
 use app\models\AdminModel;
-use app\models\AjaxModel;
+use app\models\AjaxModel; 
 
 
 //use app\models\SignupForm;

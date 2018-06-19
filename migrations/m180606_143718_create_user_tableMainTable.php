@@ -7,7 +7,7 @@ use yii\db\Migration;
  */
 class m180606_143718_create_user_tableMainTable extends Migration
 {
-    /**
+    /** 
      * {@inheritdoc}
      */
     public function safeUp()
