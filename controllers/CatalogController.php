@@ -15,7 +15,7 @@ use app\models\AjaxModel;
 
 class CatalogController extends Controller
 {
-    
+      
 	 public $defaultAction = 'index';
 	
 	
