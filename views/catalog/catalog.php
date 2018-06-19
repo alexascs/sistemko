@@ -6,6 +6,8 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 $this->title = 'Каталог';
+
+$this->params['breadcrumbs'][] =['label' => 'Подкатегория', 'url' => ['/site/index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 
@@ -92,18 +94,27 @@ function printSection($arrSection){
 			 
 		
 		
+			 
+	 
 			
-
-			
-			
+			 
 			
 					<?php
-					for ($x=1; $x<$model->quantityPageForCurSection; $x++) {
-						echo '<a  href='.Url::to(['catalog/index', 'section' => $model->section, 'element'=> 'non', 'page'=> $x,]).' > '.$x.' </a>';    
-						
-						
-						
-						
+					//$qp=ceil($model->quantityPageForCurSection);
+					
+					//echo '<br>  qp  = '.$qp.'<br>';
+					if($model->quantityPageForCurSection>1){
+					
+							for ($x=0; $x<$model->quantityPageForCurSection; $x++) {
+								
+								$pn=$x+1;
+								echo '<a  href='.Url::to(['catalog/index', 'section' => $model->section, 'element'=> 'non', 'page'=> $x,]).' > '.$pn.'  </a>';    
+								
+								
+								
+								
+							};
+					
 					};
 					?>
 
@@ -189,39 +200,41 @@ echo '</tr>';
 			
 	//	print_r($model->arrElements);
 		
-		// echo 'TopArrCurSection   <br>';echo '<br>';echo '<br>';echo '<br>';
+		  echo 'TopArrCurSection   <br>';echo '<br>';echo '<br>';echo '<br>';
 
-	//	 print_r($model->TopArrCurSection);
+	 	 print_r($model->TopArrCurSection);
 		
-	//	 echo '<br>';echo '<br>';echo '<br>';echo '<br>';
+	 echo '<br>';echo '<br>';echo '<br>';echo '<br>';
         //echo'BottomArrCurSection     =<br>';
 		 //print_r($model->BottomArrCurSection); 
 		
 		
-		//foreach($model->BottomArrCurSection as $k=>$v)
-		//{
+		foreach($model->BottomArrCurSection as $k=>$v)
+		{
 		
-		//echo gettype($model->quantityPageForCurSection);
+		echo gettype($v).'<br>';
 			
-			//print_r($model->quantityPageForCurSection);
+			
 			
 			
 			//echo '<br>';
-		//};
+		};
 		// echo '<br>';echo '<br>';echo '<br>';echo '<br>';
 
 				// print_r($model->section);
 		
 		// echo '<br>';echo '<br>';echo '<br>';echo '<br>';
 
-		//  print_r($model->BottomArrCurSection);
+		  print_r($model->BottomArrCurSection);  echo '<br>';
 		
-		//echo $model->elementPerPage.' elementPerPage   ';echo '<br>';echo '<br>';   echo 'page '.$model->page;echo '<br>';echo '<br>';
+		  $model->elementPerPage.' elementPerPage   ';echo '<br>';echo '<br>';   echo 'page '.$model->page;echo '<br>';echo '<br>';
 		
 
 		
-		
-		///echo intval( $model->page)*$model->elementPerPage;
-
+		echo $model->message.' message of model';
+		 //echo intval( $model->page)*$model->elementPerPage;
+		 
+		 
+print_r($model->quantityPageForCurSection);
 		
 			  ?>

@@ -95,7 +95,7 @@ class CatalogModel extends Model
 				        }
 				
 				
-				$this->message=$this->message.$mes;
+				//$this->message=$this->message.$mes;
 				
 			}
 			
@@ -109,7 +109,7 @@ class CatalogModel extends Model
 				 //we need element only for our group
 				 
 				 $this->BottomArrCurSection[]=intval((trim($this->section)));
-				 $rt=intval((trim($this->section)));
+				// $rt=intval((trim($this->section)));
 				 $mainArray=Array();
 				 //$mainArray[]=0;
 				// $mainArray[]=19;
@@ -123,8 +123,8 @@ class CatalogModel extends Model
 		         $elements = Element::find()
 				  ->where(['idp' =>$this->BottomArrCurSection ,'issection' =>false]) 
 				 ->orderBy("name")				
-				 ->offset( intval( $this->page)*$this->elementPerPage)
-				  ->limit(intval($this->elementPerPage))
+				 ->offset( intval( $this->page*$this->elementPerPage))
+				  //->limit(intval($this->elementPerPage))
 				 //->where(['idp' =>ltrim(  $startCode )])
 				 ->all();
 				
@@ -144,7 +144,7 @@ class CatalogModel extends Model
 						$idArray[ 'index1']= $element->index1;
 						$idArray[ 'index2']= $element->index2;
 						$idArray[ 'idp']= $element->idp;
-						$idArray[ 'childArray']= '';  ///$this->makeTreeForSection($section->id);
+						//$idArray[ 'childArray']= '';  ///$this->makeTreeForSection($section->id);
 						$this->arrElements[]=$idArray;
 				};
 				
@@ -243,7 +243,7 @@ class CatalogModel extends Model
 			public function fillTopArrCurSection(){
 				
 				///make  key for the section
-				
+				if (!isset($this->section)){$this->section=$this->id_tovar;};
 				$key="top_section_".$this->section;
 				
 				
@@ -384,7 +384,7 @@ class CatalogModel extends Model
 	
 
                $count = Element::find()//->where(['idp' =>$this->BottomArrCurSection  ])->count();
-        ->where(['idp' =>$this->BottomArrCurSection ,'issection' =>false]) 
+               ->where(['idp' =>$this->BottomArrCurSection ,'issection' =>false]) 
 				// ->orderBy("name")				
 				 //->offset(100)
 				 // ->limit($this->elementPerPage)
@@ -392,9 +392,13 @@ class CatalogModel extends Model
 			
          ->count();
 		 
-		   
-		   
-	 $this->quantityPageForCurSection= ceil(  $count/$this->elementPerPage);
+		   $this->message='quantitq = '.$count.'quantitq = ';
+		   if(!$count){
+			   
+			   $this->quantityPageForCurSection=0;
+		   }else{  $this->quantityPageForCurSection = ceil( $count/$this->elementPerPage);};
+			   
+	
 	 //$this->quantityPageForCurSection= ceil(  $count/$this->elementPerPage);
 
 	 //$this->quantityPageForCurSection= ceil(  $count/intval($this->elementPerPage));

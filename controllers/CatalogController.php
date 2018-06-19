@@ -24,8 +24,8 @@ class CatalogController extends Controller
     {
 		$model=new CatalogModel();
 		//$model->scenario = 'default';
-		 $model->elementPerPage=20;
-		 $model->quantityPageForCurSection=1;
+		 $model->elementPerPage=50;
+		 $model->quantityPageForCurSection;
 		 
 		$model->load(Yii::$app->request->get(),'');
 		
@@ -51,7 +51,17 @@ class CatalogController extends Controller
     }
  
 	 
-	
+	    public function actionAddtobascetajax()
+    { 
+			
+		   $model=new AjaxCatalog();
+		   
+		   
+		   return $this->render('catalog', [
+           'model' => $model,
+			]);
+			
+    }
 	
 	
 	
