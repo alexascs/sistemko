@@ -150,6 +150,8 @@ class m180606_143718_create_user_tableMainTable extends Migration
 		  $this->dropTable('element');		 
 		 $this->dropTable('zakaz');
 		 	 $this->dropTable('bascet');
+			  	 $this->dropTable('cache');
+				  $this->dropTable('price');
 		 
     }
 }

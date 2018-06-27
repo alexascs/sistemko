@@ -57,6 +57,24 @@ class CatalogController extends Controller
 		    $model=new AjaxModel();
 		   $model->message='addtobascetajax';
 		   
+		   
+		   
+		  $session = Yii::$app->session;
+		  if ($session->isActive){ $model->message= $model->message.'  isAllaiv';
+				 
+				$model->message= $model->message.'<br>'.$session ->getId();
+			};
+		   
+		    if (Yii::$app->user->isGuest){
+				
+				$model->message= $model->message.'<br> user is guest';
+				
+			}else{
+				
+				$model->message= $model->message.'<br> user is user  ';
+			}
+		   
+		   
 		   return $this->render('catalogajax', [
            'model' => $model,
 			]);

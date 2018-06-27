@@ -8,6 +8,13 @@ use yii\helpers\Url;
 $this->title = 'Каталог';
 $this->params['breadcrumbs'][] = $this->title;
 
+
+
+ 
+$session = Yii::$app->session;
+$session->open();
+
+
 /// we have to delete lasta element form  $model->TopArrCurSection   it is our top top super section
 $countTopArray=count($model->TopArrCurSection);
 
