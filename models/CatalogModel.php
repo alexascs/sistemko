@@ -124,7 +124,7 @@ class CatalogModel extends Model
 				  ->where(['idp' =>$this->BottomArrCurSection ,'issection' =>false]) 
 				 ->orderBy("name")				
 				 ->offset( intval( $this->page*$this->elementPerPage))
-				  //->limit(intval($this->elementPerPage))
+				  ->limit(intval($this->elementPerPage))
 				 //->where(['idp' =>ltrim(  $startCode )])
 				 ->all();
 				

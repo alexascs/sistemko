@@ -113,8 +113,10 @@ function printSection($arrSection){
 	<div class="col-sm-8" >
 
 			<div class="site-catalog-right">
-			  <h1 id="message_div" >сообщение модели</h1>
+			  
 		
+		
+		          <h1 id="section_name" ><?=$model->getSectionNameById($model->section)?></h1>
 					<?php
 					
 					if($model->quantityPageForCurSection>1){
@@ -194,7 +196,7 @@ echo '</tr>';
   
 			 
 			</div>
- 
+              <h1 id="message_div" >сообщение модели</h1>
 	</div>
 </div>
 
@@ -266,7 +268,7 @@ function mes(mes){
 		
 		// echo '<br>';echo '<br>';echo '<br>';echo '<br>';
 
-		 // print_r($model->BottomArrCurSection);  echo '<br>';
+		  print_r($model->BottomArrCurSection);  echo '<br>';
 		
 		//  $model->elementPerPage.' elementPerPage   ';echo '<br>';echo '<br>';   echo 'page '.$model->page;echo '<br>';echo '<br>';
 		

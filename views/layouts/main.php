@@ -46,20 +46,21 @@ $menuItems = [
    ['label' => 'Главная', 'url' => ['/site/index']],
     ['label' => 'О компании', 'url' => ['/site/about']],
     ['label' => 'Контакты ', 'url' => ['/site/contact']],
-	 
- 
+	
 ];
  
 if (Yii::$app->user->isGuest) {
+	
+	
     $menuItems[] = ['label' => 'Регистрация', 'url' => ['/site/signup']];
     $menuItems[] = ['label' => 'Войти', 'url' => ['/site/login']];
-	  
+	
 	 
 	
 } else {
 	
 	 $menuItems[] =['label' => 'Заказы', 'url' => [Url::to(['site/zakaz'])]];
-	 $menuItems[] =['label' => 'Корзина', 'url' => [Url::to(['site/basket'])]];
+	// $menuItems[] =['label' => 'Корзина', 'url' => [Url::to(['site/basket'])]];
 	
     $menuItems[] = '<li>'
         . Html::beginForm(['/site/logout'], 'post')
@@ -69,7 +70,9 @@ if (Yii::$app->user->isGuest) {
         )
         . Html::endForm()
         . '</li>';
-}
+};
+
+$menuItems[] =['label' => 'Корзина', 'url' => [Url::to(['site/basket'])]];
  
 echo Nav::widget([
     'options' => ['class' => 'navbar-nav navbar-right'],
