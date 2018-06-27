@@ -53,11 +53,11 @@ class CatalogController extends Controller
 	 
 	    public function actionAddtobascetajax()
     { 
-			
-		   $model=new AjaxCatalog();
+			$this->layout = 'ajaxl';
+		    $model=new AjaxModel();
+		   $model->message='addtobascetajax';
 		   
-		   
-		   return $this->render('catalog', [
+		   return $this->render('catalogajax', [
            'model' => $model,
 			]);
 			

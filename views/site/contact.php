@@ -4,9 +4,15 @@
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model app\models\ContactForm */
 
+
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
+
+
+
+
+
 
 $this->title = 'Contact';
 $this->params['breadcrumbs'][] = $this->title;
@@ -34,10 +40,15 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php else: ?>
 
         <p>
-            If you have business inquiries or other questions, please fill out the following form to contact us.
-            Thank you.
+            если у вас есть предложения можете отправить их нам заполнив форум:
+			
+			
         </p>
 
+		
+		
+		
+		
         <div class="row">
             <div class="col-lg-5">
 
@@ -65,4 +76,39 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
 
     <?php endif; ?>
+	
+	<?  echo Yii::$app->user->isGuest.'данные пользователя'; ?>
+	
+		<?  echo  'сессия пользователя';
+$session = Yii::$app->session;
+
+// if session is not open, open session
+if ( !$session->isActive) { $session->open(); }
+
+// get session id
+echo (Yii::$app->session->getId());
+
+print_r(Yii::$app->session);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	?>
+	;
+	
+	
 </div>

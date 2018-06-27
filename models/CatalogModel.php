@@ -277,9 +277,9 @@ class CatalogModel extends Model
 				 //it is curient section if we have the id we have the section
 				// if(isset($sectionId)){  };
 				 
-				 $this->TopArrCurSection[]=intval($sectionId) ;
+				 //$this->TopArrCurSection[]=intval($sectionId) ;
 				//echo($sectionId );
-				  return;
+				 // return;
 				 
 				  $section = Section::find()
                   ->where(['id' =>$sectionId ])
@@ -408,5 +408,27 @@ class CatalogModel extends Model
   
 
 
+  
+  	 
+ public function getSectionNameById($id){
+	
+
+               $element = Section::find()//->where(['idp' =>$this->BottomArrCurSection  ])->count();
+               ->where(['id' =>$id]) 
+				// ->orderBy("name")				
+				 //->offset(100)
+				 // ->limit($this->elementPerPage)
+				 //->where(['idp' =>ltrim(  $startCode )])
+			
+              ->one();
+		    if($element){
+			return $element->name;};
+ 
+	 
+	 
+ }
+  
+  
+  
 
 }

@@ -144,10 +144,27 @@ class SiteController extends Controller
 		$user->adress="";
         $user->generateAuthKey();
         if ($user->save()) {
-            echo 'good';
-				return  'alex';
+            ///echo 'good';
+				
+				
+			$this->layout = 'ajaxl';
+             $modelajax= new AjaxModel;
+			 $modelajax->message='good add admin';
+				return $this->render('ajaxv', [
+                'model' => $modelajax,
+			]);
 			
         }
+		
+		
+		$this->layout = 'ajaxl';
+             $modelajax= new AjaxModel;
+			 $modelajax->message='admin is already added';
+				return $this->render('ajaxv', [
+                'model' => $modelajax,
+			]);
+			
+		
     };
 	
 	

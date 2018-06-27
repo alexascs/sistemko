@@ -37,6 +37,14 @@ $this->params['breadcrumbs'][] = $this->title;
 		
 		
 		
+		<p><div class="btn btn-default"  id="btn_site_addadmin"  onclick='btn_site_addadmin()'        >создать админа пользователя</div></p>
+
+	
+		 
+		
+		
+		
+		
 		
 	
     <code><//?= __FILE__ ?></code>
@@ -103,6 +111,26 @@ function btn_site_cleancache() {
 
  console.log("секции ")
 }
+
+
+function btn_site_addadmin() {
+    
+
+   var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+   if (this.readyState == 4 && this.status == 200) {
+      mes( this.responseText);
+    }
+  };
+  xhttp.open("GET", "<?=Url::to(['site/addadmin']) ?>", true);
+  xhttp.send();
+
+ console.log("начало ")
+}
+
+
+
+
 
 
 
