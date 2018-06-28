@@ -3,6 +3,7 @@
 /* @var $this yii\web\View */
 
 use yii\helpers\Html;
+use yii\bootstrap\ActiveForm;
 
 $this->title = 'Корзина';
 $this->params['breadcrumbs'][] = $this->title;
@@ -77,5 +78,37 @@ $this->params['breadcrumbs'][] = $this->title;
 					</div>
 	
 			</div>
+		   
+		<div class="row"> 
+				
+				
+				<?php if ( count($model->basketArray)>0   ): ?>
+					<?php $form = ActiveForm::begin(['id' => 'zakaz-form']); ?>
+
+                    <?= $form->field($modelForm, 'name')->label('Имя')->textInput(['autofocus' => true]) ?>
+
+                    <?= $form->field($modelForm, 'email')->label('электронный адрес') ?>
+
+                    <?= $form->field($modelForm, 'phone')->label('телефон') ?>
+
+                    <?= $form->field($modelForm, 'adress')->textarea(['rows' => 6])->label('Адрес')  ?>
+
+                    
+
+                    <div class="form-group">
+                        <?= Html::submitButton('Оформить заказ', ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>
+                    </div>
+
+                  <?php ActiveForm::end(); ?>
+				
+				
+				<?php endif; ?>
+				
+				
+				
+
+		</div>
+			
+			
 	</div>
 	 

@@ -10,7 +10,7 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\User;
-use app\models\SignupForm;
+use app\models\SignupForm; 
 
 use app\models\CatalogModel;
 use app\models\AdminModel;
@@ -22,6 +22,7 @@ use app\models\PasswordResetRequestForm;
 use app\models\ResetPasswordForm;
 use app\models\BasketModel;
 use app\models\ZakazModel;
+use app\models\ZakazForm;
 
 class SiteController extends Controller
 {
@@ -370,8 +371,9 @@ class SiteController extends Controller
     {
 			//$this->layout = 'ajaxl';	
 		
-		 $model= new BasketModel();	 
-
+		 $modelBasket= new BasketModel();	 
+          $modelZakazForm= new ZakazForm();	
+		  
 
             //sessionid
 							$session = Yii::$app->session;
@@ -379,7 +381,7 @@ class SiteController extends Controller
 
 								//	$AjaxModel->message= $AjaxModel->message.'<br>'.$session ->getId();
 
-									$model->sessionForBasket=$session ->getId();
+									$modelBasket->sessionForBasket=$session ->getId();
 
 							};
 
@@ -393,17 +395,23 @@ class SiteController extends Controller
 
 
 									//$AjaxModel->message= $AjaxModel->message.'<br> user is user  ';
-									$model->userId=Yii::$app->user->id;
+									$modelBasket->userId=Yii::$app->user->id;
 
 
 							}
 
 
-		 $model->fillBasketArray();
+		 $modelBasket->fillBasketArray();
 		  
 			
+			
+			$modelZakazForm->name='alexandra';
+			
+			
+			
 		   return $this->render('basket', [
-         'model' => $model,
+         'model' => $modelBasket, 
+		 'modelForm'=>$modelZakazForm,
 			]);
 			
 		
