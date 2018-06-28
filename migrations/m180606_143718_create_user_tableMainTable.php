@@ -81,10 +81,12 @@ class m180606_143718_create_user_tableMainTable extends Migration
 		
 		
 		
-		  $this->createTable('bascet', [
+		  $this->createTable('basket', [
             
 			'id' => $this->primaryKey(),
 			'userid'=> $this->integer(),
+			'sessionid'=> $this->string(),
+			
 			'elementid'=> $this->integer(),
 			'price'=> $this->integer(),
 			'sum'=> $this->float(),
@@ -149,7 +151,7 @@ class m180606_143718_create_user_tableMainTable extends Migration
 		 $this->dropTable('section');
 		  $this->dropTable('element');		 
 		 $this->dropTable('zakaz');
-		 	 $this->dropTable('bascet');
+		 	 $this->dropTable('basket');
 			  	 $this->dropTable('cache');
 				  $this->dropTable('price');
 		 

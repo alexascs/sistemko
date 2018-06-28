@@ -4,33 +4,32 @@ namespace app\models;
 
 use Yii;
 use yii\base\Model;
+use app\models\Basket;
 
 /**
  * ContactForm is the model behind the contact form.
  */
 class BasketModel extends Model
 {
-    //public $section;
-    //public $element;
-    //public $subject;
-    //public $body;
-    //public $verifyCode;
-
+      //add element to bssket
+	public $elementForAddToBasket;
+    public $sessionForBasket;
+	 public $userId;
+	 
+	 
+	 public $basketArray;
+	
+	
 
     /**
      * @return array the validation rules.
      */
-   // public function rules()
-    //{
-     //   return [
-            // name, email, subject and body are required
-           // [['section', 'email', 'subject', 'body'], 'required'],
-            // email has to be a valid email address
-           // ['section', 'element'],
-            // verifyCode needs to be entered correctly
-           // ['verifyCode', 'captcha'],
-      //  ];
-    //}
+   public function rules()
+    {
+        return [
+                [['elementForAddToBasket', 'sessionForBasket', 'userId'], 'safe'],
+       ];
+    }
 
     /**
      * @return array customized attribute labels
@@ -47,18 +46,96 @@ class BasketModel extends Model
      * @param string $email the target email address
      * @return bool whether the model passes validation
      */
-    // public function contact($email)
-    // {
-        // if ($this->validate()) {
-            // Yii::$app->mailer->compose()
-                // ->setTo($email)
-                // ->setFrom([$this->email => $this->name])
-                // ->setSubject($this->subject)
-                // ->setTextBody($this->body)
-                // ->send();
+     public function addElementToBasket()
+     {   
+	 
+	 
 
-            // return true;
-        // }
-        // return false;
-    // }
+           $basket=new Basket();
+		
+		   
+		   
+		   $basket->userid= $this->userId;
+			 $basket->sessionid= $this->sessionForBasket;
+			 $basket->price=12.5;
+			 
+			 $basket->elementid=$this->elementForAddToBasket;
+			 
+			 
+			 
+			// $el->quantity ='0';
+		     $basket->quantity = 1;
+			 //$basket->index1 = $el->index1;
+			 //$basket->index2 =$el->index2;
+			 
+			 
+			 
+			//'id' => $this->primaryKey(),
+			//'userid'=> $this->integer(),
+			//'sessionid'=> $this->string(),
+			
+			//'elementid'=> $this->integer(),
+			//'price'=> $this->integer(),
+			//'sum'=> $this->float(),
+			//'quantity'=> $this->float(),
+			//'zakazid'=> $this->string(),
+			//'order'=> $this->boolean(), 
+			//'price'=> $this->float(), 
+			   // echo 'alex';
+		$basket->save();
+	 
+         //return false;
+     }
+	 
+	 
+	 
+	 public function fillBasketArray(){
+		 
+		 
+		 $this->basketArray=[];
+		 
+		 
+		 $baskets=  Basket::find()
+		  ->where(['sessionid' =>$this->sessionForBasket ]) 
+		 ->all();
+		 
+		 if($baskets){
+			   
+			   foreach($baskets as $basket){
+				   
+				   $itArray=[];
+				  $itArray['elementid']=$basket->elementid;
+				  $itArray['sessionid']=$basket->sessionid;
+				  
+				  $this->basketArray[]=$itArray;
+				  
+				   
+			   }
+			   
+			
+			 
+			 
+		 }
+		 
+		 
+		 
+		 
+		 //finde all chaild of id.
+		     //    $elements = Element::find()
+				 
+				// ->orderBy("name")				
+				// ->offset( intval( $this->page*$this->elementPerPage))
+				//  ->limit(intval($this->elementPerPage))
+				 //->where(['idp' =>ltrim(  $startCode )])
+				// ->all();
+		 
+		 
+		 
+		 
+		 
+		 
+	 }
+	 
+	 
+	 
 }

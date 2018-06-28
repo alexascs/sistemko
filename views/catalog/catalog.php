@@ -147,10 +147,11 @@ function printSection($arrSection){
                         <thead>
                             <tr>
                                 <td>Наименование</td>
-                                <td>Ед.<td>
+                                <td>Ед.</td>
                                 <td>Цена, руб.(в т.ч. НДС)</td>
-                                <td>в корзине</td> 
-                                <td>добавить </td>
+                                <td>цена</td> 
+                                <td> в корзине</td>
+								<td> добавить   </td>
 								<td>    </td>
                             </tr>
                            
@@ -181,7 +182,7 @@ echo '<tr  id ="element_row_'.$element['id'].'">';
                                 echo'<td>100</td>';  
                                 echo' <td>0  </td>';
 								echo' <td  ><input  id ="input_'.$element['id'].'"   type="text"  value="1">     </td>';
-							    echo' <td>    <div class="btn btn-default"  id="btn_site_addadmin"  onclick=btn_catalog_add_to_bascet('.$element['id'].') >добавить</div>
+							    echo' <td>    <div class="btn btn-default"  id="btn_site_addadmin"  onclick=btn_catalog_add_to_basket('.$element['id'].') >добавить</div>
 
 	</td>';
 echo '</tr>'; 
@@ -211,17 +212,24 @@ echo '</tr>';
 
 
 <script>
-function btn_catalog_add_to_bascet(data) {
+function btn_catalog_add_to_basket(data) {
     
 
    var xhttp = new XMLHttpRequest();
+   
+   var dataF = new FormData();
+   dataF.append('elementid', data);
+   dataF.append('quanty', '1');
+   
+   
+   
    xhttp.onreadystatechange = function() {
    if (this.readyState == 4 && this.status == 200) {
       mes( this.responseText);
     }
   };
-  xhttp.open("GET", "<?=Url::to(['catalog/addtobascetajax']) ?>", true);
-  xhttp.send();
+  xhttp.open("POST", "<?=Url::to(['catalog/addtobasketajax']) ?>", true);
+  xhttp.send(dataF);
   t='input_'+data;
   quan=document.getElementById('input_'+data).value;
   
@@ -282,9 +290,11 @@ function mes(mes){
 
 		
 		//echo $model->message.' message of model';
-		 //echo intval( $model->page)*$model->elementPerPage;
+		 echo intval( $model->page)*$model->elementPerPage;
 		 
 		 
-//print_r($model->quantityPageForCurSection);
+		 echo 'quantityPageForCurSection';
+		 
+print_r($model->quantityPageForCurSection);
 		
 			  ?>

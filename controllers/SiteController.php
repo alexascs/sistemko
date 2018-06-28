@@ -370,7 +370,36 @@ class SiteController extends Controller
     {
 			//$this->layout = 'ajaxl';	
 		
-		 $model= new BasketModel();	  
+		 $model= new BasketModel();	 
+
+
+            //sessionid
+							$session = Yii::$app->session;
+							if ($session->isActive){// $AjaxModel->message= $AjaxModel->message.'  isAllaiv';
+
+								//	$AjaxModel->message= $AjaxModel->message.'<br>'.$session ->getId();
+
+									$model->sessionForBasket=$session ->getId();
+
+							};
+
+							
+							//user id;
+							if (Yii::$app->user->isGuest){
+
+								//$AjaxModel->message= $AjaxModel->message.'<br> user is guest';
+
+							}else{
+
+
+									//$AjaxModel->message= $AjaxModel->message.'<br> user is user  ';
+									$model->userId=Yii::$app->user->id;
+
+
+							}
+
+
+		 $model->fillBasketArray();
 		  
 			
 		   return $this->render('basket', [

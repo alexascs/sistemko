@@ -13,6 +13,12 @@ use yii\caching\Cache;
 class CatalogModel extends Model
 {   
     
+	//add element to bssket
+	public $elementForAddToBasket;
+    public $sessionForBasket;
+	 public $userId;
+	
+	
 	
 	public $elementPerPage;	 
 	 
@@ -109,17 +115,9 @@ class CatalogModel extends Model
 				 //we need element only for our group
 				 
 				 $this->BottomArrCurSection[]=intval((trim($this->section)));
-				// $rt=intval((trim($this->section)));
-				 $mainArray=Array();
-				 //$mainArray[]=0;
-				// $mainArray[]=19;
 				 
-				// echo gettype(BottomArrCurSection[0]) ;
-				//  echo gettype(BottomArrCurSection[1]) ;
-				 	 //echo gettype( $rt) ;
-				 
-				 
-				//finde all chaild of id.
+				
+				
 		         $elements = Element::find()
 				  ->where(['idp' =>$this->BottomArrCurSection ,'issection' =>false]) 
 				 ->orderBy("name")				
@@ -129,9 +127,7 @@ class CatalogModel extends Model
 				 ->all();
 				
 				
-				//print_r($this->BottomArrCurSection);        
-				
-				
+				  
 				
 				foreach($elements as $element){
 					$idArray=Array();
@@ -320,6 +316,8 @@ class CatalogModel extends Model
                                        $this->getChildrenForSection($this->section);
 									   
 									   
+									  // print_r($this->BottomArrCurSection);
+									   
 									//$this->BottomArrCurSection=$inArray;
 
 									//Yii::$app->cache->set($key, $treeArray);
@@ -335,12 +333,14 @@ class CatalogModel extends Model
 		   }
 		   
   public function  getChildrenForSection($sectionId){
-   
+               // echo $sectionId;
    	 	//$this->BottomArrCurSection[]=$section->id;
 				 //it is curient section if we have the id we have the section
 				 
 				 //$childArray=Array();
-				$this->BottomArrCurSection[]=intval($section->id);
+				$this->BottomArrCurSection[]=intval($sectionId);
+				 // print_r($this->BottomArrCurSection);
+				 
 				 
 				  $sections = Section::find()
                   ->where(['idp' =>$sectionId ])
@@ -392,6 +392,11 @@ class CatalogModel extends Model
 			
          ->count();
 		 
+		 
+		 //echo $count.'alex';
+		 //print_r ($this->BottomArrCurSection);
+		 
+		 
 		   $this->message='quantitq = '.$count.'quantitq = ';
 		   if(!$count){
 			   
@@ -413,14 +418,9 @@ class CatalogModel extends Model
  public function getSectionNameById($id){
 	
 
-               $element = Section::find()//->where(['idp' =>$this->BottomArrCurSection  ])->count();
+               $element = Section::find()
                ->where(['id' =>$id]) 
-				// ->orderBy("name")				
-				 //->offset(100)
-				 // ->limit($this->elementPerPage)
-				 //->where(['idp' =>ltrim(  $startCode )])
-			
-              ->one();
+			   ->one();
 		    if($element){
 			return $element->name;};
  
@@ -428,6 +428,17 @@ class CatalogModel extends Model
 	 
  }
   
+  
+  
+  public function addElementToBasket(){
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+  }
   
   
 
