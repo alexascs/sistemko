@@ -6,6 +6,8 @@ use Yii;
 use yii\base\Model;
 use app\models\Basket;
 
+use app\models\Usersessitions;
+
 /**
  * ContactForm is the model behind the contact form.
  */
@@ -93,10 +95,40 @@ class BasketModel extends Model
 		 
 		 
 		 $this->basketArray=[];
+		 $sessionIdArray=[];
+		 $sessionIdArray[]=$this->sessionForBasket;
+		 
+		 if(isset ($this->userId)){
+			 
+			 $sessionForUserInDB=Usersessitions::find()
+			  ->where(['userid' =>  $this->userId])
+			  ->all();
+			  
+			  
+			  if($sessionForUserInDB){
+				  
+				  
+				  
+				  foreach( $sessionForUserInDB as $val  ){
+					  
+					  $sessionIdArray[]=$val->session;  
+					  
+				  };
+				  
+				
+				  
+				  
+			  }
+			 
+			 
+			 
+			 
+			 
+		 };
 		 
 		 
 		 $baskets=  Basket::find()
-		  ->where(['sessionid' =>$this->sessionForBasket ]) 
+		  ->where(['sessionid' =>  $sessionIdArray]) 
 		 ->all();
 		 
 		 if($baskets){

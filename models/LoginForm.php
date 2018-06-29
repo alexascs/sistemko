@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 
+use app\models\Usersessitions;
 /**
  * LoginForm is the model behind the login form.
  *
@@ -16,6 +17,7 @@ class LoginForm extends Model
     public $username;
     public $password;
     public $rememberMe = true;
+	public $oldsession;
 
 	
 	
@@ -83,4 +85,60 @@ class LoginForm extends Model
 
         return $this->_user;
     }
+	
+	
+	
+	public function addOldSessionForUser(){
+		
+		
+			if(isset($this->oldsession)){
+				
+				//echo('   addOldSessionForUser  ');
+				
+				$session= new Usersessitions();
+				
+				$session->userid=Yii::$app->user->id;
+				$session->session=$this->oldsession;
+				$session->save(); 
+				
+				
+				//echo $this-oldsession;
+				//echo $this-username;
+				
+				
+			}
+		}
+	public function addCurientSessionForUser(){
+		
+		
+		
+		                    $s = Yii::$app->session;
+							if ($s->isActive){ 
+
+								 	//$model->oldsession=$session ->getId();
+									
+								$session= new Usersessitions();
+			
+								$session->userid=Yii::$app->user->id;
+								$session->session=$s ->getId();
+								$session->save(); 	
+									
+                                  
+							};
+		 
+			
+			
+			
+			
+			//echo $this-oldsession;
+			//echo $this-username;
+			
+			
+	}
+		
+		
+		
+	
+	
+	
 }

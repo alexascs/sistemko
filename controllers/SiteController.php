@@ -24,6 +24,11 @@ use app\models\BasketModel;
 use app\models\ZakazModel;
 use app\models\ZakazForm;
 
+use app\models\ AddLogingModel;
+
+use app\models\Usersessitions; 
+
+
 class SiteController extends Controller
 {
     /**
@@ -88,9 +93,26 @@ class SiteController extends Controller
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
+         
+		   
+		   
+		   $model = new LoginForm();
+		   
+		   
+		                     $session = Yii::$app->session;
+							if ($session->isActive){ 
 
-        $model = new LoginForm();
+								 	$model->oldsession=$session ->getId();
+                                  
+							};
+		
+       
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+			//
+			$model->addOldSessionForUser();
+			$model->addCurientSessionForUser();
+			
+			
             return $this->goBack();
         }
 
