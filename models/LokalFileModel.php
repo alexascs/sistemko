@@ -11,28 +11,51 @@ use yii\base\Model;
 class LokalFileModel 
 {
       private   $dataArray;
-    //public $element;
+      public $results;
     //public $subject;
     //public $body;
     //public $verifyCode;
 
 	
-	
-	function __construct(){
-		
-		
-		
-		
-		
-	}
+
 
 	
-	public function getDataByKeyFromLocalfile($key){
+	public static  function getDataByKeyFromLocalfile($key){
+		
+		$array_line_full=[];
+		$value=Yii::$app->cache->get("$key");
+		 
+		
+			if ($value === false){
+			 
+				 $elementFile = fopen( $_SERVER['DOCUMENT_ROOT'].'/localdata.txt', 'r+');
+				 
+				while (($line = fgetcsv($elementFile, 0, ";")) !== FALSE) { 
+                   $array_line_full[] = $line; 
+				   }	;			 
+				 //устанавливаем сразу для всех переменных из файла
+				  
+				  
+				  foreach($array_line_full  as $k=>$v)
+				  {
+					  
+					    //value1  key  value2 valeu
+ 						 
+						Yii::$app->cache->set(trim($v[0]), trim($v[1]));
+					   
+								  
+				  }
+				  
+				
+			}
 		
 		
+		$value=Yii::$app->cache->get("$key");
 		
 		
-		return "data ".$key;
+		 
+		
+		return $value ;
 		
 	}
 

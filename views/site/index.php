@@ -6,15 +6,16 @@
 use yii\helpers\Html;
 
 use yii\helpers\Url;
+use app\models\LokalFileModel;
 
 $this->title = 'My Yii Application';
 ?>
 <div class="site-index">
 
     <div class="jumbotron">
-        <h1>ВСТ  КОМПЛЕКТ</h1>
+        <h1><?= LokalFileModel::getDataByKeyFromLocalfile('local_data_nameComppany')?></h1>
 
-        <p class="lead">ВЫ НАХОДИТЕСЬ НА САЙТЕ ВСТ КОМПЛЕКТ </p>
+        <p class="lead"> <?= LokalFileModel::getDataByKeyFromLocalfile('local_data_nameComppany')?> </p> 
 
          
     </div>

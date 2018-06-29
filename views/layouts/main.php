@@ -10,6 +10,8 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use yii\helpers\Url;
+use app\models\LokalFileModel;
+
   
 AppAsset::register($this);
 ?>
@@ -30,7 +32,7 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
    NavBar::begin([
-    'brandLabel' => 'ВСТ-КОМПЛЕКТ',
+    'brandLabel' => LokalFileModel::getDataByKeyFromLocalfile('local_data_nameComppany'),
     'brandUrl' => Yii::$app->homeUrl,
     'options' => [
         'class' => 'navbar-inverse navbar-fixed-top',
@@ -87,16 +89,18 @@ NavBar::end();
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
         <?= Alert::widget() ?>
-        <?= $content ?>
+        <?= $content ?>		
     </div>
 </div>
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; ВСТ-КОМПЛЕКТ <?= date('Y') ?></p>
+        <p class="pull-left">&copy;   <?= LokalFileModel::getDataByKeyFromLocalfile('local_data_nameComppany').date('Y') ?></p>
 
-        <p class="pull-right"><?ВСТ-КОМПЛЕКТ//= Yii::powered() ?></p>
+       
     </div>
+	
+	<?//echo LokalFileModel::getDataByKeyFromLocalfile('local_data_nameComppany');?>
 </footer>
 
 <?php $this->endBody() ?>
