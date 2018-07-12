@@ -655,6 +655,13 @@ class CatalogModel extends Model
   
   
 
+			  private function setVisibleHard(&$elementforHard){
+		  
+		  
+		  $elementforHard['visible']=true;
+		  
+		  
+	  }													  
 	  private function setVisibleSectionAndChildren(&$elementArraySection){
 	 	  
 		//  echo 'аргумент id = '.$elementArraySection['id'].'  вход в функцию<br>';
@@ -679,7 +686,30 @@ class CatalogModel extends Model
 		   
 	   }
 	   
-	   if($visible){  $elementArraySection['visible']=true;};
+	   if($visible){  $elementArraySection['visible']=true;
+	   
+	   
+	   
+	       if( count($elementArraySection['childArray'])>0){
+				  
+				  
+			   foreach($elementArraySection['childArray'] as $keyHard=>$recArryaHard){
+				   
+				   $this->setVisibleHard($elementArraySection['childArray'][$keyHard]);
+				   
+			   }
+		   }
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   };
 	   
 	  
 	  
