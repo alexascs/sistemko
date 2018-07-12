@@ -195,7 +195,7 @@ echo '<ul>';
   
 			 
 			</div>
-<h1 id="message_div" >сообщение модели</h1>
+<h1 id="message_div" ></h1>
 		
 		
 			 

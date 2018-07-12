@@ -84,7 +84,7 @@ class CatalogModelAdmin extends Model
 			  
 			  
 			  $sectionsNoPar = Section::find()
-				->where(['xmlcodep' =>'not' ,'active'=>true]) 
+				->where(['xmlcodep' =>'813a6dc9-d4bf-11e1-b131-001e5848397d' ,'active'=>true]) 
 				 ->all();
 				 
 			  if($sectionsNoPar){
@@ -191,8 +191,7 @@ class CatalogModelAdmin extends Model
 						$idArray[ 'name']= $element->name;
 						$idArray[ 'index1']= $element->index1;
 						$idArray[ 'index2']= $element->index2;
-						$idArray[ 'idp']= $element->idp;
-					   
+						$idArray[ 'idp']= $element->idp;					   
 						
 						
 						$this->arrElements[]=$idArray;

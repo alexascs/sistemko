@@ -83,7 +83,7 @@ class CatalogModel extends Model
 			  
 			  
 			  $sectionsNoPar = Section::find()
-				->where(['xmlcodep' =>'not' ,'active'=>true])  
+				->where(['xmlcodep' =>'813a6dc9-d4bf-11e1-b131-001e5848397d' ,'active'=>true])  
 				 ->all();
 				 
 			  if($sectionsNoPar){
