@@ -16,15 +16,14 @@ class CatalogModel extends Model
 	//add element to bssket
 	public $elementForAddToBasket;
     public $sessionForBasket;
-	 public $userId;
+	public $userId;
 	
 	
+	public $sectionNoParentArray;
 	
 	public $elementPerPage;	 
-	 
-	public  $quantityPageForCurSection;
-	
-    public $message;
+	public $quantityPageForCurSection;
+	public $message;
 	
     public  $section;
     public  $element;
@@ -39,6 +38,10 @@ class CatalogModel extends Model
 	
 	
 	public   $arrElements; 
+	public   $arrElementsImage; 
+	public   $arrElementsPrice; 
+	
+	
     public   $arrSectioons;
 	public   $TopArrCurSection; // we need for every request fo curient section
 	public   $BottomArrCurSection; 
@@ -71,7 +74,63 @@ class CatalogModel extends Model
 			return $scenarios;
 	}
 	
-       ///data for view arrSectioons  
+       ///data for view arrSectioons 
+
+
+		  public   function fillSectionNoParentArray(){
+			  
+			  $this->sectionNoParentArray=[];
+			  
+			  
+			  $sectionsNoPar = Section::find()
+				->where(['xmlcodep' =>'not' ,'active'=>true])  
+				 ->all();
+				 
+			  if($sectionsNoPar){
+				  
+				  
+				  foreach($sectionsNoPar as $section ){
+					  
+					// $this->sectionNoParentArray[]=$section;
+					
+						$idArray=[];
+					
+						$idArray[ 'id']= $section->id;
+						$idArray[ 'xmlcodep']= $section->xmlcodep;
+						$idArray[ 'xmlcode']= $section->xmlcode;
+						$idArray[ 'name']= $section->name;
+						$idArray[ 'index1']= $section->index1;
+						$idArray[ 'index2']= $section->index2;
+						$idArray[ 'idp']= $section->idp;
+						$idArray['visible']= false;		 
+						$idArray[ 'childArray']= $this->makeTreeForSection($section);
+						
+					
+					$this->sectionNoParentArray[]=$idArray;
+					
+					  
+					  
+					  
+					  
+				  }
+			  }
+			  
+			  
+			  
+			  
+			  
+			  
+			  
+			  
+			  
+			  
+			  
+			  
+		  }
+
+
+
+		  
 		  public function fillarrSectioons()
 			{ //$mes='<br>fillarrSectioons  <br>';
 				 
@@ -80,22 +139,13 @@ class CatalogModel extends Model
 			          // $mes=$mes.' array'.$this->arrSectioons.' <br> ';
 
 						if ($this->arrSectioons === false) {
-						
-						$this->id_tovar=$this->findeSectionByCode('00000000001');
-						
-						$mes=$mes."00000000001 al = id ".$this->id_tovar.'<br>';
+				 
 			
-						
-						;
-                             
-						 
-						 
+						$this->fillSectionNoParentArray();
 						   
-						   $treeArray=$this->makeTreeForSection ($this->id_tovar);
-						 
-						   $this->arrSectioons=$treeArray;
-						    
-							//print_r( $treeArray); 
+						     $this->arrSectioons= $this->sectionNoParentArray;
+						  
+						  
 							
 						  //Yii::$app->cache->set('arrSectioons', $treeArray);
 				        }
@@ -140,7 +190,8 @@ class CatalogModel extends Model
 						$idArray[ 'index1']= $element->index1;
 						$idArray[ 'index2']= $element->index2;
 						$idArray[ 'idp']= $element->idp;
-						//$idArray[ 'childArray']= '';  ///$this->makeTreeForSection($section->id);
+						
+						
 						$this->arrElements[]=$idArray;
 				};
 				
@@ -155,48 +206,55 @@ class CatalogModel extends Model
 		  
 		  
 		  
-        public  function  makeTreeForSection ($startCode)
-		 {      // $mes='<br>fillarrSectioons  <br>';
+        public  function  makeTreeForSection ($sectionLocal)
+		 {      
+						
+				 	
+		           if(!isset($sectionLocal->xmlcode)){return;};
+		  
+		         $sections = Section::find()
+				 ->where(['xmlcodep' =>$sectionLocal->xmlcode,'active'=>true])
+				 ->all();
 		  
 		        
-				$childArray=Array();
-				$mainArray=Array();
-				
-				 //finde all chaild of id.
-		         $sections = Section::find()
-				 ->where(['idp' =>ltrim(  $startCode )])
-				 ->all();
 				 
-				  
-		 
-		                if(!$sections) {return;};
-		 
-					    foreach($sections  as  $section ){
-							///id array;
-							$idArray=Array();
+				
+				$mainArray=[];
+				
+				 
+				   foreach($sections  as  $section ){
+							 
+						$idArray=[];
 							
-						
+						//echo  $section->xmlcode.'<br>';
 
 						$idArray[ 'id']= $section->id;
+						$idArray[ 'xmlcodep']= $section->xmlcodep;
+						$idArray[ 'xmlcode']= $section->xmlcode;
 						$idArray[ 'name']= $section->name;
 						$idArray[ 'index1']= $section->index1;
 						$idArray[ 'index2']= $section->index2;
 						$idArray[ 'idp']= $section->idp;
-						$idArray[ 'childArray']= $this->makeTreeForSection($section->id);
+						$idArray['visible']= false;		 
+						$idArray[ 'childArray']= $this->makeTreeForSection($section);
 						
 						$mainArray[]=$idArray;
                              
-						$this->message=$this->message.$section->id.'<br>';
+						//$this->message=$this->message.$section->id.'<br>';
 								 
 						  
 					    };
-		 
-		 
-	 
-			 $childArray[$startCode]=$mainArray;
+				 
+		   
+			        
 			
 			
-			return $childArray;
+			
+			
+			
+			return   $mainArray;
+			
+			
 			
 		 }
  
@@ -239,8 +297,15 @@ class CatalogModel extends Model
 			public function fillTopArrCurSection(){
 				
 				///make  key for the section
-				if (!isset($this->section)){$this->section=$this->id_tovar;};
-				$key="top_section_".$this->section;
+				if (!isset($this->section)){
+					$this->TopArrCurSection=[];
+					return;								
+					
+				};
+				
+				
+				
+				$key="top_cur_section_array_".$this->section;
 				
 				
 				$this->TopArrCurSection = Yii::$app->cache->get($key);
@@ -299,7 +364,7 @@ class CatalogModel extends Model
 		   
 		   {	///make  key for the section
 				
-				$key="botton_section_".$this->section;
+				$key="botton_cur_section_array_".$this->section;
 				
 				 
 				$this->BottomArrCurSection = Yii::$app->cache->get($key);
@@ -333,14 +398,11 @@ class CatalogModel extends Model
 		   }
 		   
   public function  getChildrenForSection($sectionId){
-               // echo $sectionId;
-   	 	//$this->BottomArrCurSection[]=$section->id;
-				 //it is curient section if we have the id we have the section
-				 
-				 //$childArray=Array();
+               
+			   
 				$this->BottomArrCurSection[]=intval($sectionId);
-				 // print_r($this->BottomArrCurSection);
-				 
+				
+				
 				 
 				  $sections = Section::find()
                   ->where(['idp' =>$sectionId ])
@@ -349,11 +411,8 @@ class CatalogModel extends Model
 				 if(!$sections){return;};
 				  
 				foreach($sections as $section ){
-					 //$inArray=Array();
-					// $inArray['id']=[$section->id];
-					// $inArray['idchildren']=$this->getChildrenForSection($section->id);
-					
-					//$childArray[]= $inArray;
+			
+			
 					
 					$this->BottomArrCurSection[]=intval($section->id);
 					$this->getChildrenForSection($section->id);
@@ -441,5 +500,262 @@ class CatalogModel extends Model
   }
   
   
+  
+  
+  
+  
+  public function fillImageForElementArray(){
+	  
+	    $this->arrElementsImage=[];
+	  
+	  $elementid=[];
+	  
+	  foreach($this->arrElements as $element){
+		   $elementid[]=$element['id'];
+		  	  
+	  }
+	  
+	  
+	  
+		if( count($elementid)>0 ){
+				 
+				  
+				  
+				 // $imageAr=[];
+				  
+				  
+				  $images=Image::find()
+				  ->where(['elementid'=>$elementid])
+				  ->all();
+				  
+				  
+					  if($images){
+					           foreach($images as $image  ){
+								   
+								  $this->arrElementsImage[$image['elementid']]=$image['filep'];
+								   
+								   
+							   }
+						 
+					  
+					  
+					  
+					  }
+					  
+				  
+				   
+				   
+				   foreach($this->arrElements  as $key => $element){
+					   
+					   
+					   if( isset(  $this->arrElementsImage[$element['id']])   ){  // $element['image']=
+					   
+					   $this->arrElements[$key]['image']=$this->arrElementsImage[$element['id']];
+					   
+					   
+					 //  echo $element['image'];
+						   
+					   }else{ //echo 'not';
+						      $this->arrElements[$key]['image']='not';
+						   
+						   
+					   }
+					   
+					   
+					   
+				   }
+			 
+					  
+					   
+				  
+					
+			  }
+			  
+		
+  
+  }
+  
+  
+  
+  
+  
+   public function fillPriceForElementArray(){
+	  
+	    $this->arrElementsPrice=[];
+	  
+	  $elementid=[];
+	  
+	  foreach($this->arrElements as $element){
+		   $elementid[]=$element['id'];
+		  	  
+	  }
+	  
+	  
+	  
+		if( count($elementid)>0 ){
+				 
+				  
+				  
+			
+				  
+				  
+				  $prices=Price::find()
+				  ->where(['elementid'=>$elementid])
+				  ->all();
+				  
+				  
+					  if($prices){
 
+					 // print_r($elementid);
+					  
+					           foreach($prices as $price  ){
+								  
+								  $this->arrElementsPrice[$price['elementid']]=$price['price'];
+								   
+								   
+							   }
+						 
+					  
+					  
+					  
+					  }
+					  
+				  
+				   
+				   
+				   foreach($this->arrElements  as $key => $element){
+					   
+					   
+					   if( isset(  $this->arrElementsPrice[$element['id']])   ){  // $element['image']=
+					   
+					   $this->arrElements[$key]['price']=$this->arrElementsPrice[$element['id']];
+					   
+					   
+					 //  echo $element['image'];
+						   
+					   }else{ //echo 'not';
+						      $this->arrElements[$key]['price']='not';
+						   
+						   
+					   }
+					   
+					   
+					   
+				   }
+			 
+					  
+					   
+				  
+					
+			  }
+			  
+		
+  
+  }
+  
+  
+
+	  private function setVisibleSectionAndChildren(&$elementArraySection){
+	 	  
+		//  echo 'аргумент id = '.$elementArraySection['id'].'  вход в функцию<br>';
+		  
+/* 	   if(array_search($elementArraySection['id'],$this->TopArrCurSection)){
+			
+			 		 	  echo 'установка визибле иф аргумент id = '.$elementArraySection['id'].'перед установкой <br>';  
+			   $elementArraySection['visible']=true;
+	    
+	   
+	   } */
+	   
+	   
+	   $visible=false;
+	   foreach($this->TopArrCurSection as $tarEl){
+		   if($tarEl==$elementArraySection['id']){ //echo ' найден элемент в топарай '.$tarEl.' = '.$elementArraySection['id'].' <br>';
+			     $visible=true;
+				 break;
+			   
+			   
+		   }
+		   
+	   }
+	   
+	   if($visible){  $elementArraySection['visible']=true;};
+	   
+	  
+	  
+	  if( count($elementArraySection['childArray'])>0){
+		      
+			  
+			  foreach($elementArraySection['childArray'] as $key=>$recArrya){
+			 
+					 
+			 $this->setVisibleSectionAndChildren($elementArraySection['childArray'][$key]);
+			  
+		  }
+		  
+		  
+		  
+	  }
+	  
+	  
+	  
+  }
+  
+  
+  
+  
+  public function setVisibleForCurienSection(){
+	   
+				 
+					 
+		  
+ 
+			if(isset($this->section)){ 
+			
+				foreach($this->arrSectioons  as $key=>  $section){							
+							
+					    $this->arrSectioons[$key]['visible']=true;
+					
+			
+						
+					}
+				
+			
+			
+			
+			
+				foreach($this->arrSectioons  as $key2=>$section){ 
+
+				 		 
+						$this->setVisibleSectionAndChildren($this->arrSectioons[$key2]);
+				   
+					  
+			 
+				}
+			
+			
+			
+			
+			
+			}else{	
+						 
+				
+					foreach($this->arrSectioons  as $key=>  $section){							
+							
+					    $this->arrSectioons[$key]['visible']=true;
+			
+						
+					}
+				
+			}
+			
+				//echo'<br>';echo'<br>';echo'<br>';
+			//print_r($this->TopArrCurSection);
+			//echo'<br>';echo'<br>';echo'<br>';
+			
+			//print_r($this->arrSectioons);
+			
+			
+			
+			}
 }

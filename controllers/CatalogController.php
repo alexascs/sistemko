@@ -30,22 +30,19 @@ class CatalogController extends Controller
 	
     public function actionIndex()
     {  
-	  //echo 'alex';
+
 		$model=new CatalogModel();
-		//$model->scenario = 'default';
+
 		 $model->elementPerPage=50;
-		 //$model->quantityPageForCurSection;
+
 		 
 		$model->load(Yii::$app->request->get(),'');
-		
-		//main array of sections   
+
 	    $model->fillarrSectioons();
 		
-		
-		//top section for curient sectio
 		$model->fillTopArrCurSection(); 
 	   
-	   ///echo 'alex3';
+
 	   
 	   
 	   $model->fillBottomArrCurSection();
@@ -53,11 +50,12 @@ class CatalogController extends Controller
 		   
 	    $model->fillarrElements();
 			
+	 $model->fillImageForElementArray();
+  $model->fillPriceForElementArray();		 
 			
-			
-			
+			  $model->setVisibleForCurienSection(); 
 		   return $this->render('catalog', [
-         'model' => $model,
+         	'model' => $model,
 			]);
 			
     }

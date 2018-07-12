@@ -16,78 +16,24 @@ $session->open();
 
 
 /// we have to delete lasta element form  $model->TopArrCurSection   it is our top top super section
-$countTopArray=count($model->TopArrCurSection);
+/// we have to delete lasta element form  $model->TopArrCurSection
+$countTopArray = count($model->TopArrCurSection);
 
-if($countTopArray>0){
-	
-	unset($model->TopArrCurSection[array_search('48', $model->TopArrCurSection)]);
-};
+if ($countTopArray > 0) {
 
-if($countTopArray>0){
-	
 	unset($model->TopArrCurSection[array_search($model->section, $model->TopArrCurSection)]);
-};
+}; 
+//add all of top sections 
 
+if (isset($model->TopArrCurSection) && $countTopArray > 0) {
+	$reverseArray = array_reverse($model->TopArrCurSection);
+	foreach ($reverseArray as $val) {
+		$this->params['breadcrumbs'][] = ['label' => $model->getSectionNameById($val), 'url' => [Url::to(['catalog/index', 'section' => $val, 'element' => 'non', 'page' => 0, ])]];
 
- ///add all of top sections 
- 
-if(isset($model->TopArrCurSection)&&count($model->TopArrCurSection)>0){
-	
-	foreach($model->TopArrCurSection as $val){
-	$this->params['breadcrumbs'][] =['label' =>  $model->getSectionNameById($val), 'url' => [Url::to(['catalog/index', 'section' => $val, 'element'=> 'non', 'page'=> 0,])]];
-	
 	};
-	
 };
+$this->params['breadcrumbs'][] = ['label' => $model->getSectionNameById($model->section), 'url' => [Url::to(['catalog/index', 'section' => $model->section, 'element' => 'non', 'page' => 0, ])]];
 
-
-$this->params['breadcrumbs'][] =['label' => $model->getSectionNameById($model->section), 'url' => [Url::to(['catalog/index', 'section' => $model->section, 'element'=> 'non', 'page'=> 0,])]];
-
-  
-
-
-function printSection($arrSection){
-	
-	 
-	
-	if(isset($arrSection)&&count($arrSection)>0){
-		 
-		echo '<ul>';
- 
-		
-		
-		foreach($arrSection as  $dataArray){
-			
-	
-		
-		      
-					foreach($dataArray as  $data){
-						
-						echo '<li>';
-						
-						echo   '<a  href='.Url::to(['catalog/index', 'section' => $data['id'], 'element'=> 'non', 'page'=> 0,]).' >'.$data['name'].'</a>';    
-						
-				 
-						if(count($data['childArray'])>0){printSection($data['childArray']);};
-							echo '</li>';
-						
-					}
-					
-		
-			
-		}
-		
-		
-			echo '</ul>';
-	
-	} 
-	
-	
-	
-	
-	
-	
-};
 ?>
 
 <div class="row"> 
@@ -100,18 +46,94 @@ function printSection($arrSection){
 
 			<div class="site-catalog-left">
 			
+<?function printSection($arrSection,$cursection)
+{
+	  
+	if (!isset($arrSection['id'])) {return;};
+			
+	if($arrSection['visible']){
 
+		$qv=0;
+		$q=0;
+
+		foreach($arrSection['childArray']  as $k=>$el){
+			if($el[visible])$qv=$qv+1;   
+			
+			$q=$q+1; 
+			;}
+
+
+		echo '<li t='.$qv.'>';
+		echo '<a  href='.Url::to(['catalog/index', 'section' => $arrSection['id'], 'element' => 'non', 'page' => 0, ]) . ' >' . $arrSection['name']. '</a>'; 
+
+		
+		 
+		
+			if(!$qv==0){
+
+			echo '<ul>';
+
+			foreach($arrSection['childArray'] as $key =>$children){printSection($children,$cursection);}
+
+			echo '</ul>';
+
+			}else{ if($q>0&&$arrSection['id']==$cursection){
+				
+				echo '<ul>';
+
+				 
+			     foreach($arrSection['childArray'] as $key =>$children){
+					 
+					 
+					 echo '<li>';
+					 echo '<a  href='.Url::to(['catalog/index', 'section' => $children['id'], 'element' => 'non', 'page' => 0, ]) . ' >' . $children['name']. '</a>'; 
+					 echo '</li>';
+					 
+				 }
+
+			     echo '</ul>';
+				
+				
+			}
+				
+				
+				
+				
+			}
+			
+			
+			
+			
+		
+		echo '</li>';
+	
+	}
+	
+	
+	  
+	
+	
+	
+	
+	
+	
+	
+	 
+};
+
+
+
+echo '<ul>';
+
+
+		foreach ($model->arrSectioons as $topSection) {
+			printSection($topSection,$model->section);
+		};
+		echo '</ul>';
+			?>
 			
 			
 			</div>
-			
-			<?
-			
-			
-			
-			printSection($model->arrSectioons)?>
-			 
-			 
 			
 
 	</div>
@@ -121,8 +143,6 @@ function printSection($arrSection){
 
 			<div class="site-catalog-right">
 			  
-		
-		
 		          <h1 id="section_name" ><?=$model->getSectionNameById($model->section)?></h1>
 					<?php
 					
@@ -142,69 +162,45 @@ function printSection($arrSection){
 					?>
 
 			
-            
-			 <table id="list"   style="width:100%" >
-                        <thead>
-                            <tr>
-                                <td>Наименование</td>
-                                <td>Ед.</td>
-                                <td>Цена, руб.(в т.ч. НДС)</td>
-                                <td>цена</td> 
-                                <td> в корзине</td>
-								<td> добавить   </td>
-								<td>    </td>
-                            </tr>
-                           
-						   
-                        </thead>
-                        <tbody>
-
-
- 
- 
- 
- <?
- echo '<tr>';
-                               echo' <td>           </td>';
-                                echo'<td>            </td>';
-                                echo'<td>            </td>';
-                                echo'<td>             </td>';  
-                                echo' <td>            </td>';
-								echo' <td>            </td>';
-							    echo' <td>             </td>';
-echo '</tr>'; 
- foreach($model->arrElements as $element){
-	 
-echo '<tr  id ="element_row_'.$element['id'].'">';
-                               echo' <td> '.$element['name'].'</td>';
-                                echo'<td>шт</td>';
-                                echo'<td> </td>';
-                                echo'<td>100</td>';  
-                                echo' <td>0  </td>';
-								echo' <td  ><input  id ="input_'.$element['id'].'"   type="text"  value="1">     </td>';
-							    echo' <td>    <div class="btn btn-default"  id="btn_site_addadmin"  onclick=btn_catalog_add_to_basket('.$element['id'].') >добавить</div>
-
-	</td>';
-echo '</tr>'; 
-	
-	 
-};
- 
- 
- ?>
- 
-
-                        </tbody>
-                    </table>
-			 
-			 	<br><br><br><br>
-             <?//=print_r($model->TopArrCurSection)?>
-			 
+          
+			 <table class="table-bordered catalog-table">
+			<thead>
+				<tr>
+					<th>Изображение</th>
+					<th>Название</th>
+					<th>Остатки</th>
+					<th>Цена</th>
+					<th>В корзину</th>
+				</tr>
+			</thead>
+				<?php foreach($model->arrElements as $item) : ?>
+				<tr>
+				<td>
+					<?php $img = ($item['image'] !== 'not') ? "https://metropt.ru/upload/".$item['image'] : '/images/no-image.jpg' ?>
+					<img class="img-responsive center-block" src="<?=$img;?>" alt="">
+				</td>
+				<td><?=$item['name'];?></td>
+				<td><?=$item['id'];?></td>
+				<td><?=$item['price'];?></td>
+				<td>
+					<div class="basket-control clearfix">
+						<input id="q<?=$item['id'];?>" data-ov="1" type="text" class="basket-control__input" placeholder="1" value="1">
+						<button data-id="<?=$item['id'];?>" class="basket-control__button">Добавить</button>
+					</div>
+				</td>
+				</tr>
+				<?php endforeach; ?>
+		</table>
   
   
 			 
 			</div>
-              <h1 id="message_div" >сообщение модели</h1>
+<h1 id="message_div" >сообщение модели</h1>
+		
+		
+			 
+			</div>
+            
 	</div>
 </div>
 
@@ -254,47 +250,14 @@ function mes(mes){
 //echo 'секция модели  '.$model->section;		
        //print_r($model->arrSectioons);
 		
-		echo '<br>';echo '<br>';echo '<br>';echo '<br>';
+		//echo '<br>';echo '<br>';echo '<br>';echo '<br>';
 			
 	//	print_r($model->arrElements);
 		
-		  echo 'TopArrCurSection   <br>';echo '<br>';echo '<br>';echo '<br>';
+		//  echo 'sections   <br>';echo '<br>';echo '<br>';echo '<br>';
 
-	 	 print_r($model->TopArrCurSection);
+	 	// print_r($model->arrSectioons );
 		
-	// echo '<br>';echo '<br>';echo '<br>';echo '<br>';
-        //echo'BottomArrCurSection     =<br>';
-		 //print_r($model->BottomArrCurSection); 
-		
-		
-	//	foreach($model->BottomArrCurSection as $k=>$v)
-	//	{
-		
-	//	echo gettype($v).'<br>';
-			
-			
-			
-			
-			//echo '<br>';
-	//	};
-		// echo '<br>';echo '<br>';echo '<br>';echo '<br>';
-
-				// print_r($model->section);
-		
-		// echo '<br>';echo '<br>';echo '<br>';echo '<br>';
-
-		  print_r($model->BottomArrCurSection);  echo '<br>';
-		
-		//  $model->elementPerPage.' elementPerPage   ';echo '<br>';echo '<br>';   echo 'page '.$model->page;echo '<br>';echo '<br>';
-		
-
-		
-		//echo $model->message.' message of model';
-		 echo intval( $model->page)*$model->elementPerPage;
-		 
-		 
-		 echo 'quantityPageForCurSection';
-		 
-print_r($model->quantityPageForCurSection);
+	 
 		
 			  ?>

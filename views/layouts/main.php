@@ -40,12 +40,12 @@ AppAsset::register($this);
 ]);
  
 $menuItems = [
-    ['label' => 'Админ', 'url' => [$url = Url::to(['site/adminsite'])]],
+   
    
   ['label' => 'Каталог', 'url' => [$url = Url::to(['catalog/index', ])]],  ////(['catalog/index', 'section' => 'main', 'element'=> 'main'])]],            // $url = Url::to(['post/view', 'id' => 100]);
 
 //['label' => 'Каталог', 'url' => [$url = Url::to(['catalog/index', 'section' => 'main', 'element'=> 'main' ])]], 
-   ['label' => 'Главная', 'url' => ['/site/index']],
+  // ['label' => 'Главная', 'url' => ['/site/index']],
     ['label' => 'О компании', 'url' => ['/site/about']],
     ['label' => 'Контакты ', 'url' => ['/site/contact']],
 	

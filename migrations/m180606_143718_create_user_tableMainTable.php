@@ -14,6 +14,22 @@ class m180606_143718_create_user_tableMainTable extends Migration
     {    $tableOptions = null;
 	
 	
+	
+	
+	 $this->createTable('image', [
+            'id' => $this->primaryKey(),
+			'type'=>$this->integer(),
+			'elementid'=> $this->string(),			 
+			'filed'=> $this->string(),
+			'filep'=> $this->string(),
+			'index1'=>$this->integer(),
+			'index2'=>$this->string(),
+			]);
+		
+		
+		
+		
+	
          $this->createTable('user', [
             'id' => $this->primaryKey(),
             'username' => $this->string()->notNull()->unique(),
@@ -38,6 +54,7 @@ class m180606_143718_create_user_tableMainTable extends Migration
 			'name'=> $this->string(),
 			'code'=> $this->string(),
 			'xmlcode'=> $this->string(),
+			'xmlcodep'=> $this->string(),
 			'active'=> $this->boolean(),
 			'codep' => $this->string(),
 			'idp' => $this->integer(),
@@ -53,7 +70,9 @@ class m180606_143718_create_user_tableMainTable extends Migration
 		
 		  $this->createTable('element', [
             'id' => $this->primaryKey(),
+			'xmlcodep'=> $this->string(),
 			'name'=> $this->string(),
+				'artikul'=> $this->string(),
 			'code'=> $this->string(),
 			'xmlcode'=> $this->string(),
 			'active'=> $this->boolean(),
@@ -62,6 +81,7 @@ class m180606_143718_create_user_tableMainTable extends Migration
 			'quantity' => $this->float(),
 			'issection' => $this->boolean(),
 			'index1' => $this->integer(),
+					'indexp' => $this->integer(),
 			'index2' => $this->string(),
 			'active' => $this->boolean(),
 			
@@ -70,13 +90,23 @@ class m180606_143718_create_user_tableMainTable extends Migration
 		
 		 $this->createTable('price', [
             'id' => $this->primaryKey(),
+			'type'=>$this->integer(),
 			'elementid'=> $this->string(),			 
 			'price'=> $this->string(),
-			 
+			'index1'=>$this->integer(),
 			]);
 		
 		 
 		
+		
+		
+		 $this->createTable('quantity', [
+            'id' => $this->primaryKey(),
+			'type'=>$this->integer(),
+			'elementid'=> $this->string(),			 
+			'quantity'=> $this->float(),
+			'index1'=>$this->integer(),
+			]);
 		
 		
 		
@@ -103,7 +133,10 @@ class m180606_143718_create_user_tableMainTable extends Migration
             
 			'id' => $this->primaryKey(),
 			'userid'=> $this->integer(),
-			 'summ'=> $this->string(),
+			'usersessitionsid'=> $this->integer(),
+			'summ'=> $this->string(),
+			 
+			 
 			 
 			
 			
@@ -160,14 +193,18 @@ class m180606_143718_create_user_tableMainTable extends Migration
      */
     public function safeDown()
     {
+		
+		 $this->dropTable('image');
         $this->dropTable('user');
 		 $this->dropTable('section');
-		  $this->dropTable('element');		 
+		 $this->dropTable('element');		 
 		 $this->dropTable('zakaz');
-		 	 $this->dropTable('basket');
-			  	 $this->dropTable('cache');
-				  $this->dropTable('price');
-				  	  $this->dropTable('usersessitions');
+		 $this->dropTable('basket');
+		 $this->dropTable('cache');
+		 $this->dropTable('price');
+		 $this->dropTable('usersessitions');
+		 $this->dropTable('quantity');
+					  
 				  
 		 
     }
