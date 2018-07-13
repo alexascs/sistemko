@@ -16,16 +16,7 @@ class m180606_143718_create_user_tableMainTable extends Migration
 	
 	
 	
-	 $this->createTable('image', [
-            'id' => $this->primaryKey(),
-			'type'=>$this->integer(),
-			'elementid'=> $this->string(),			 
-			'filed'=> $this->string(),
-			'filep'=> $this->string(),
-			'index1'=>$this->integer(),
-			'index2'=>$this->string(),
-			]);
-		
+
 		
 		
 		
@@ -42,11 +33,21 @@ class m180606_143718_create_user_tableMainTable extends Migration
             'updated_at' => $this->integer()->notNull(),
 			'phone' => $this->string(),
 			'adress' => $this->string(),
+			'name' => $this->string(),
 			
         ], $tableOptions);
 		
 		
 		
+			 $this->createTable('image', [
+            'id' => $this->primaryKey(),
+			'type'=>$this->integer(),
+			'elementid'=> $this->string(),			 
+			'filed'=> $this->string(),
+			'filep'=> $this->string(),
+			'index1'=>$this->integer(),
+			'index2'=>$this->string(),
+			]);
 		
 		
 		  $this->createTable('section', [
@@ -118,7 +119,7 @@ class m180606_143718_create_user_tableMainTable extends Migration
 			'sessionid'=> $this->string(),
 			
 			'elementid'=> $this->integer(),
-			'price'=> $this->integer(),
+			//'price'=> $this->integer(),
 			'sum'=> $this->float(),
 			'quantity'=> $this->float(),
 			'zakazid'=> $this->string(),

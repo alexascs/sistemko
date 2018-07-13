@@ -91,8 +91,73 @@ class AdminModel extends Model
 		
 	}
 	
-	
+	//we process the file from server  file is in csv file format 
+	//every string of file must heve next column name  
+     //Наименование	   Код  	Артикул	  'Это группа'	'Входит в группу'	'Код'	'Номенклатурная группа'	'Код'
 	 
+	 
+	
+	 public function Uploadenom()
+     {
+					  $fp = fopen($_SERVER['DOCUMENT_ROOT'].'/upload/1c.csv', "r"); // Открываем файл в режиме чтения
+					
+					
+					$count=0;
+					$mes="";
+
+					 if ($fp) 
+					  {$mes='file is '.'<br>';
+						 while (!feof($fp))
+						 {      $count=$count+1; //if($count==20){break;};
+						 $mytext = fgets($fp, 999);
+						 
+					
+						 
+						 
+						 $ar=str_getcsv($mytext,";");
+						 
+						// print_r($ar);
+						 
+						 //if($count==300){break;};
+						 
+						   
+						   if(ltrim($ar[10])==1){  
+
+	                         $this->procceccArrayOfStingFromFile($ar);
+
+						   };
+						 
+					
+						 
+						 	// $mes=$mes.$mytext.$count.'  '.$ar[1].'<br>';       
+						  $mes=$mes.'  '.$ar[0].'<br>';    
+						 
+						  //$inc=0;
+						  //$imes='';
+						 // foreach(   $ar  as $t=>$r ){  $mes=$mes.'  '.$r.'  '.' = '.$t.' ';     };
+						 
+						 
+						 ///$mes=$mes.$count."<br />";
+						 }
+					   }
+					  else $mes="Ошибка при открытии файла";
+					  
+					  
+					  fclose($fp);
+		 
+		 
+		 $this->MakeSections();
+		 
+		 
+		 $this->fillidpInSectionTable();
+		 
+		 
+		  //$this->message=$this->message.$mes;
+		 
+		 
+		 
+		 
+     }
 	
 	
 	public function procceccElementForSection($el){
@@ -152,40 +217,44 @@ class AdminModel extends Model
 	
 	
 	
-		public function MakeSections()
-		{  
-				$mes="MakeSections<br>";
-
-
-
-				$elements = Element::find()
-				->where( ['issection' =>'1'])
-				->indexBy('id')
-				->all();
-
-
-				if(isset($elements)){
-
-				$counter=0;
-				foreach($elements  as $k=>$element)
-				{
-
-					//$counter=$counter+1;
-
-					$this->procceccElementForSection($element);
-
-					//$mes=$mes.$counter.$element->code.'<br>';//    .$$element->code.'<br>';
-
-
-				}
-
-
-
-
-
-				}
-		// $this->message=$this->message.$mes;
-		}
+	 public function MakeSections()
+     {   $mes="MakeSections<br>";
+	 
+	 
+	 
+    //     	$elements = Element::find()
+	//		//->where( ['issection' =>ltrim('Да')])
+   // ->all();
+	
+	$elements = Element::find()
+	->where( ['issection' =>'1'])
+    ->indexBy('id')
+    ->all();
+	
+	
+	if(isset($elements)){
+		
+		$counter=0;
+		 foreach($elements  as $k=>$element)
+		 {
+			 
+	   $counter=$counter+1;
+		 
+		 $this->procceccElementForSection($element);
+	 
+		
+		$mes=$mes.$counter.$element->code.'<br>';//    .$$element->code.'<br>';
+		
+		
+	};
+		
+		 
+		 
+		
+		 
+     }
+	  $this->message=$this->message.$mes;
+	 }
 	 
 	
 	 
@@ -238,91 +307,56 @@ class AdminModel extends Model
 		
 			
 		}
-		
-		
-		
-		
-		
-		
-		
-
 			
+	 
+		$elements = Element::find()
+        //  ->where(['issection' =>1, 'idp'=>null])	  
+         ->all();
 	
-		$elements = Element::find()        
-        ->all();
-	
-	
-	     $q=0;
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	  $mes=$mes."fillidpInSectionTable    elements<br>"; 
+	     //array
 		foreach($elements  as  $element ){
-			  $q=$q+1;
-			  if($q>3000){break;}
-			 // echo $q.'<br>';
-		  
-    
+			
+		 	//if(!isset($element->xmlcodep)){continue;};
+				 
+
+				 $mes=$mes.$element->xmlcodep."  element <br>";
+ 
 				 $sectionsp = Section::find()
                  ->where(['xmlcode' =>$element->xmlcodep])
                  ->one();
 				 
 				 
 				
-				   if(isset($sectionsp)){
+				  if(isset($sectionsp)){
 					  
-		 		  
+					   $mes=$mes.$sectionsp->id."  section <br>";
+				 
+					 
+					
+					 
 					 $element->idp=$sectionsp->id;
 					 
 					 $element->save();
-					 
+					  /*	
+		             */	
 
-					 }
+					 };
 				
 				
 			
-			}
+			};
 			
 			
-			
-			$elements='';
-		
-		$elements2 = Element::find()        
-        ->all();
-	
-	
-	     $q=0;
-		foreach($elements2  as  $element ){
-			  $q=$q+1;
-
-			  if($q<2900){continue;}
-			   if($q>6000){break;}
-			  
-			 // echo $q.'<br>';
-		  
-    
-				 $sectionsp = Section::find()
-                 ->where(['xmlcode' =>$element->xmlcodep])
-                 ->one();
-				 
-				 
-				
-				   if(isset($sectionsp)){
-					  
-		 		  
-					 $element->idp=$sectionsp->id;
-					 
-					 $element->save();
-					 
-
-					 }
-				
-				
-			
-			}
-			
-		
 			 
-			 
-			 
-			 
-	 // $this->message=$this->message.$mes;
+			
+	 
+	 
+	 
+	 
+	 
+	  $this->message=$this->message.$mes;
 	 }
 	
 
@@ -364,16 +398,16 @@ class AdminModel extends Model
 	
 	 public function Uploadenomartist()
      {
-				/* 	  $fp = fopen($_SERVER['DOCUMENT_ROOT'].'/upload/1c.csv', "r"); // Открываем файл в режиме чтения
+					  $fp = fopen($_SERVER['DOCUMENT_ROOT'].'/upload/1c.csv', "r"); // Открываем файл в режиме чтения
 					
 					
 								$count=0;
-								//$mes="";
+								$mes="";
 
 								 if ($fp) 
 								  {$mes='file is '.'<br>';
 									 while (!feof($fp))
-									 {   //   $count=$count+1; //if($count==20){break;};
+									 {      $count=$count+1; //if($count==20){break;};
 									 $mytext = fgets($fp, 999);
 									 
 								
@@ -381,7 +415,7 @@ class AdminModel extends Model
 									 
 										 $this->procceccArrayOfStingFromFileArtist($ar); 
 
-									 // $mes=$mes.'  '.$ar[0].'<br>';    
+									  $mes=$mes.'  '.$ar[0].'<br>';    
 									 
 									
 									 }
@@ -389,16 +423,16 @@ class AdminModel extends Model
 								  else $mes="Ошибка при открытии файла";
 								  
 								  
-								  fclose($fp); */
+								  fclose($fp);
 					 
 					 
-					 //$this->MakeSections();
+					 $this->MakeSections();
 					 
 					 
 					 $this->fillidpInSectionTable();
 					 
 					 
-					 // $this->message=$this->message.$mes;
+					  $this->message=$this->message.$mes;
 					 
 		 
 		 

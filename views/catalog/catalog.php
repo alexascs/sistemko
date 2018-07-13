@@ -1,39 +1,26 @@
-<?php
-
+ <?php
 /* @var $this yii\web\View */
-
 use yii\helpers\Html;
 use yii\helpers\Url;
-
 $this->title = 'Каталог';
 $this->params['breadcrumbs'][] = $this->title;
-
-
-
  
 $session = Yii::$app->session;
 $session->open();
-
-
 /// we have to delete lasta element form  $model->TopArrCurSection   it is our top top super section
 /// we have to delete lasta element form  $model->TopArrCurSection
 $countTopArray = count($model->TopArrCurSection);
-
 if ($countTopArray > 0) {
-
 	unset($model->TopArrCurSection[array_search($model->section, $model->TopArrCurSection)]);
 }; 
 //add all of top sections 
-
 if (isset($model->TopArrCurSection) && $countTopArray > 0) {
 	$reverseArray = array_reverse($model->TopArrCurSection);
 	foreach ($reverseArray as $val) {
 		$this->params['breadcrumbs'][] = ['label' => $model->getSectionNameById($val), 'url' => [Url::to(['catalog/index', 'section' => $val, 'element' => 'non', 'page' => 0, ])]];
-
 	};
 };
 $this->params['breadcrumbs'][] = ['label' => $model->getSectionNameById($model->section), 'url' => [Url::to(['catalog/index', 'section' => $model->section, 'element' => 'non', 'page' => 0, ])]];
-
 ?>
 
 <div class="row"> 
@@ -52,35 +39,25 @@ $this->params['breadcrumbs'][] = ['label' => $model->getSectionNameById($model->
 	if (!isset($arrSection['id'])) {return;};
 			
 	if($arrSection['visible']){
-
 		$qv=0;
 		$q=0;
-
 		foreach($arrSection['childArray']  as $k=>$el){
 			if($el[visible])$qv=$qv+1;   
 			
 			$q=$q+1; 
 			;}
-
-
 		echo '<li t='.$qv.'>';
 		echo '<a  href='.Url::to(['catalog/index', 'section' => $arrSection['id'], 'element' => 'non', 'page' => 0, ]) . ' >' . $arrSection['name']. '</a>'; 
-
 		
 		 
 		
 			if(!$qv==0){
-
 			echo '<ul>';
-
 			foreach($arrSection['childArray'] as $key =>$children){printSection($children,$cursection);}
-
 			echo '</ul>';
-
 			}else{ if($q>0&&$arrSection['id']==$cursection){
 				
 				echo '<ul>';
-
 				 
 			     foreach($arrSection['childArray'] as $key =>$children){
 					 
@@ -90,7 +67,6 @@ $this->params['breadcrumbs'][] = ['label' => $model->getSectionNameById($model->
 					 echo '</li>';
 					 
 				 }
-
 			     echo '</ul>';
 				
 				
@@ -120,12 +96,7 @@ $this->params['breadcrumbs'][] = ['label' => $model->getSectionNameById($model->
 	
 	 
 };
-
-
-
 echo '<ul>';
-
-
 		foreach ($model->arrSectioons as $topSection) {
 			printSection($topSection,$model->section);
 		};
@@ -210,7 +181,6 @@ echo '<ul>';
 <script>
 function btn_catalog_add_to_basket(data) {
     
-
    var xhttp = new XMLHttpRequest();
    
    var dataF = new FormData();
@@ -233,15 +203,11 @@ function btn_catalog_add_to_basket(data) {
  console.log(data)
  console.log("btn_catalog_add_to_bascet ")
 }
-
-
-
 function mes(mes){
 	mes_div= document.getElementById('message_div').innerHTML=mes;
 	
 	
 }
-
 </script>
 
 	 <?
@@ -255,7 +221,6 @@ function mes(mes){
 	//	print_r($model->arrElements);
 		
 		//  echo 'sections   <br>';echo '<br>';echo '<br>';echo '<br>';
-
 	 	// print_r($model->arrSectioons );
 		
 	 

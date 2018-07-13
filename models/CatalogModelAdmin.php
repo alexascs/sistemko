@@ -7,7 +7,6 @@ use yii\base\Model;
 use yii\caching\Cache;
 
 
-
 /**
  * ContactForm is the model behind the contact form.
  */
@@ -29,19 +28,19 @@ class CatalogModelAdmin extends Model
     public  $section;
     public  $element;
     public  $page;
-
 	
  
 	
 	private $id_tovar;///the main   grup  tovar;
 	
-	//private $tableSections;
+	private $elementIdArray;
 	//private $tableElements;
 	
 	
 	public   $arrElements; 
 	public   $arrElementsImage; 
 	public   $arrElementsPrice; 
+	public   $arrElementsQuantity; 
 	
     public   $arrSectioons;
 	public   $TopArrCurSection; // we need for every request fo curient section
@@ -76,7 +75,30 @@ class CatalogModelAdmin extends Model
 	}
 	
        ///data for view arrSectioons 
-
+          public   function fillElementIdArray(){
+			  
+		  $this->elementIdArray=[];
+			  	
+			  
+			  if(isset($this->arrElements)){
+				  
+				  foreach($this->arrElements as  $element){
+					  
+					  $this->elementIdArray[]=$element['id'];
+					  
+					  
+				  }
+				  
+				  
+				  
+				  
+				  
+				  
+			  };
+			  
+			  
+			  
+		  }
 
 		  public   function fillSectionNoParentArray(){
 			  
@@ -84,7 +106,7 @@ class CatalogModelAdmin extends Model
 			  
 			  
 			  $sectionsNoPar = Section::find()
-				->where(['xmlcodep' =>'813a6dc9-d4bf-11e1-b131-001e5848397d' ,'active'=>true]) 
+				->where(['xmlcodep' =>'not' ,'active'=>true])  
 				 ->all();
 				 
 			  if($sectionsNoPar){
@@ -96,16 +118,15 @@ class CatalogModelAdmin extends Model
 					
 						$idArray=[];
 					
-						$idArray['id']= $section->id;
-						$idArray['xmlcodep']= $section->xmlcodep;
-						$idArray['xmlcode']= $section->xmlcode;
-						$idArray['name']= $section->name;
-						$idArray['index1']= $section->index1;
-						$idArray['index2']= $section->index2;
-						$idArray['idp']= $section->idp;
-						$idArray['visible']= false;
-						$idArray['childArray']= $this->makeTreeForSection($section);
-						
+						$idArray[ 'id']= $section->id;
+						$idArray[ 'xmlcodep']= $section->xmlcodep;
+						$idArray[ 'xmlcode']= $section->xmlcode;
+						$idArray[ 'name']= $section->name;
+						$idArray[ 'index1']= $section->index1;
+						$idArray[ 'index2']= $section->index2;
+						$idArray[ 'idp']= $section->idp;
+						$idArray['visible']= false;		 
+						$idArray[ 'childArray']= $this->makeTreeForSection($section);
 						
 					
 					$this->sectionNoParentArray[]=$idArray;
@@ -191,7 +212,7 @@ class CatalogModelAdmin extends Model
 						$idArray[ 'name']= $element->name;
 						$idArray[ 'index1']= $element->index1;
 						$idArray[ 'index2']= $element->index2;
-						$idArray[ 'idp']= $element->idp;					   
+						$idArray[ 'idp']= $element->idp;
 						
 						
 						$this->arrElements[]=$idArray;
@@ -230,17 +251,15 @@ class CatalogModelAdmin extends Model
 							
 						//echo  $section->xmlcode.'<br>';
 
-						$idArray['id']= $section->id;
-						$idArray['xmlcodep']= $section->xmlcodep;
-						$idArray['xmlcode']= $section->xmlcode;
-						$idArray['name']= $section->name;
-						$idArray['index1']= $section->index1;
-						$idArray['index2']= $section->index2;
-						$idArray['idp']= $section->idp;						
-						$idArray['visible']= false;
-						$idArray['childArray']= $this->makeTreeForSection($section);
-						
-						
+						$idArray[ 'id']= $section->id;
+						$idArray[ 'xmlcodep']= $section->xmlcodep;
+						$idArray[ 'xmlcode']= $section->xmlcode;
+						$idArray[ 'name']= $section->name;
+						$idArray[ 'index1']= $section->index1;
+						$idArray[ 'index2']= $section->index2;
+						$idArray[ 'idp']= $section->idp;
+						$idArray['visible']= false;		 
+						$idArray[ 'childArray']= $this->makeTreeForSection($section);
 						
 						$mainArray[]=$idArray;
                              
@@ -494,8 +513,8 @@ class CatalogModelAdmin extends Model
   
   
   public function addElementToBasket(){
-	
-	   
+	  
+	  
 	  
 	  
 	  
@@ -506,17 +525,21 @@ class CatalogModelAdmin extends Model
   
   
   
+  
+  
   public function fillImageForElementArray(){
 	  
 	    $this->arrElementsImage=[];
 	  
-	  $elementid=[];
+	 
+	 
+	 /* $elementid=[];
 	  
-	  foreach($this->arrElements as $element){
+	   foreach($this->arrElements as $element){
 		   $elementid[]=$element['id'];
 		  	  
-	  }
-	  
+	  } */
+	  $elementid=$this->elementIdArray;
 	  
 	  
 		if( count($elementid)>0 ){
@@ -655,17 +678,19 @@ class CatalogModelAdmin extends Model
   
   }
   
+  
 
-    private function setVisibleHard(&$elementforHard){
+  
+	  private function setVisibleHard(&$elementforHard){
 		  
 		  
 		  $elementforHard['visible']=true;
 		  
 		  
 	  }
+	  
   
-  
-  private function setVisibleSectionAndChildren(&$elementArraySection){
+	  private function setVisibleSectionAndChildren(&$elementArraySection){
 	 	  
 		//  echo 'аргумент id = '.$elementArraySection['id'].'  вход в функцию<br>';
 		  
@@ -691,9 +716,7 @@ class CatalogModelAdmin extends Model
 	   
 	   if($visible){  $elementArraySection['visible']=true;
 	   
-	   
-	   
-	      if( count($elementArraySection['childArray'])>0){
+		   if( count($elementArraySection['childArray'])>0){
 				  
 				  
 			   foreach($elementArraySection['childArray'] as $keyHard=>$recArryaHard){
@@ -703,9 +726,6 @@ class CatalogModelAdmin extends Model
 			   }
 		   }
 		   
-	   
-	   
-	   
 	   
 	   
 	   
@@ -730,6 +750,9 @@ class CatalogModelAdmin extends Model
 	  
 	  
   }
+  
+  
+  
   
   
   
@@ -786,19 +809,98 @@ class CatalogModelAdmin extends Model
 			
 			
 			}
+			
+			
+			
+			
+			
+			
+			//fillQuantityForElementArray
+			
+			
+			
+			 public function fillQuantityForElementArray(){
+	  
+	    $this->arrElementsQuantity=[];
+	  
+	  $elementid=[];
+	  
+	  foreach($this->arrElements as $element){
+		   $elementid[]=$element['id'];
+		  	  
+	  }
+	  
+	  
+	  
+		if( count($elementid)>0 ){
+				 
+				  
+				  
+			
+				  
+				  
+				  $quantitys=Quantity::find()
+				  ->where(['elementid'=>$elementid])
+				  ->all();
+				  
+				  
+					  if($quantitys){
+
+					 // print_r($elementid);
+					  
+					           foreach($quantitys as $quantity  ){
+								  
+								  $this->arrElementsQuantity[$quantity['elementid']]=$price['quantity'];
+								   
+								   
+							   }
+						 
+					  
+					  
+					  
+					  }
+					  
+				  
+				   
+				   
+				   foreach($this->arrElements  as $key => $element){
+					   
+					   
+					   if( isset(  $this->arrElementsQuantity[$element['id']])   ){   
+					   
+					   $this->arrElements[$key]['quantity']=$this->arrElementsQuantity[$element['id']];
+					   
+					   
+					 
+						   
+					   }else{ //echo 'not';
+						      $this->arrElements[$key]['quantity']='not';
+						   
+						   
+					   }
+					   
+					   
+					   
+				   }
+			 
+					  
+					   
+				  
+					
+			  }
+			  
 		
-		
-		
-		
-		
-		
   
+  }
   
-  
-  
-  
-  
-  
-  
-  
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 }

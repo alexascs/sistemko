@@ -123,7 +123,6 @@ function printSection($arrSection,$cursection)
 
 		foreach ($catalogModel->arrSectioons as $topSection) {
 			printSection($topSection,$catalogModel->section);
-			echo 'df';
 		};
 		echo '</ul>';
 		?>
@@ -243,7 +242,7 @@ foreach ($catalogModel->arrElements as $element) {
  
  <? //print_r($catalogModel->arrElementsImage);  ?> 
  
-   <br> <br> arrSections<br>
+   <br> <br> arrSectioons<br>
  <? print_r($catalogModel->arrSectioons);  ?> 
   <br> <br>  <br>
  <?// print_r($catalogModel->arrElementsPrice);  ?> 
@@ -254,8 +253,8 @@ foreach ($catalogModel->arrElements as $element) {
  <? print_r($catalogModel->TopArrCurSection);  ?> 
  
  
-    <br> <br> section<br>
- <? print_r($catalogModel->section);  ?> 
+    <br> <br> arrSectioons<br>
+ <? print_r($catalogModel->arrSectioons);  ?> 
  
  
  

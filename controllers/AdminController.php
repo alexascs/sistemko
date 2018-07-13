@@ -69,11 +69,17 @@ class AdminController extends Controller
 		
 		$catalogModel->fillQuantitypageforqurientsection();		   
 	    $catalogModel->fillarrElements();
+		//fillElementIdArray
+		  $catalogModel->fillElementIdArray();
+		
+		
+		
 		$catalogModel->fillImageForElementArray();
 			 
 		$catalogModel->fillPriceForElementArray();	
+		$catalogModel->fillQuantityForElementArray();	
 		
-		
+		//echo 'CatalogModelAdmin';
 		$catalogModel->setVisibleForCurienSection();
 		
 		
