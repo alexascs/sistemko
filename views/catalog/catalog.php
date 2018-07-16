@@ -179,6 +179,29 @@ echo '<ul>';
 
 
 <script>
+
+
+
+(function(w){
+	w.addEventListener('click', function(e){
+		var t = e.target;
+		if(t.className === "basket-control__button"){
+			var itemID = Number(t.dataset.id);
+			var inputID = "q"+itemID;
+			var input = document.getElementById(inputID);
+			var quantity = Number(input.value);
+			console.log("Number: " + quantity);
+			if(quantity === 0 || isNaN(quantity)){
+				console.log(quantity);
+				console.log("Error");
+			}else{
+				btn_catalog_add_to_basket(itemID, quantity);
+			}
+		}
+	});
+})(window);
+
+
 function btn_catalog_add_to_basket(data) {
     
    var xhttp = new XMLHttpRequest();

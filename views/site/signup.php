@@ -51,12 +51,8 @@
             <h1><?= Html::encode($this->title) ?></h1>
             <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
                 <?= $form->field($model, 'username')->textInput(['autofocus' => true])->label('Логин') ?>
-				
-				
                 <?= $form->field($model, 'email')->textInput()->label('email') ?>
                 <?= $form->field($model, 'phone') ->textInput()->label('Телефон для связи')?>
-				
-				   <?= $form->field($model, 'name')->textInput()->label('имя получателя') ?>
                 <?= $form->field($model, 'adress')->textInput()->label('Адрес ели необходима доставка') ?>
                 <?= $form->field($model, 'password')->passwordInput()->textInput()->label('Пароль') ?>
                 <div class="form-group">

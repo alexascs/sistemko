@@ -537,33 +537,25 @@ class SiteController extends Controller
 	   
     }
 	
-	 public function actionZakaz()
+	 public function actionProfile()
     {
 		
 		
 		$catalogModel=new CatalogModel();
 		 
 		$catalogModel->elementPerPage=50;
-	     $catalogModel->load(Yii::$app->request->get(),'');		
+ 
 	    $catalogModel->fillarrSectioons(); 
 		$catalogModel->fillTopArrCurSection();  
 	    $catalogModel->fillBottomArrCurSection();
 		
-		//$catalogModel->section=438;		
-		//$catalogModel->fillQuantitypageforqurientsection();		   
-	    // $catalogModel->fillarrElements();
-		//$catalogModel->fillImageForElementArray();
-		//$catalogModel->fillPriceForElementArray();		
-		//echo 'CatalogModelAdmin';
+		 
 		$catalogModel->setVisibleForCurienSection();
 		
-		 $modelBasket= new BasketModel();	 
-          $modelZakazForm= new ZakazForm();	
-		
-		 $model= new ZakazModel();	  
+		   
 		  
 			
-		   return $this->render('zakaz', [
+		   return $this->render('profile', [
          'model' => $model,
 		 	 'catalogModel' => $catalogModel,
 			]);

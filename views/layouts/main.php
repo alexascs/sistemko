@@ -1,8 +1,6 @@
 <?php
-
 /* @var $this \yii\web\View */
 /* @var $content string */
-
 use app\widgets\Alert;
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
@@ -12,10 +10,9 @@ use app\assets\AppAsset;
 use yii\helpers\Url;
 use app\models\LokalFileModel;
 
-  
 AppAsset::register($this);
-?>
-<?php $this->beginPage() ?>
+
+$this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
 <head>
@@ -28,81 +25,77 @@ AppAsset::register($this);
 </head>
 <body>
 <?php $this->beginBody() ?>
+<!-- <div class="site-index-background"></div> -->
+<div class="wrapper">
+    <div class="header-background-wrapper image-responsive">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="header-text">
+                        <h1 class="header-title"><?=LokalFileModel::getDataByKeyFromLocalfile('local_data_nameComppany')?></h1>
+                        <h3 class="header-description"><span>Магазин резинотехнических иделий</span></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php NavBar::begin([
+            'brandLabel' => LokalFileModel::getDataByKeyFromLocalfile('local_data_nameComppany'),
+            'brandUrl' => Yii::$app->homeUrl,
+        ]);
 
-<div class="wrap">
-    <?php
-   NavBar::begin([
-    'brandLabel' => LokalFileModel::getDataByKeyFromLocalfile('local_data_nameComppany'),
-    'brandUrl' => Yii::$app->homeUrl,
-    'options' => [
-        'class' => 'navbar-inverse navbar-fixed-top',
-    ],
-]);
- 
-$menuItems = [
-   
-   
-  ['label' => 'Каталог', 'url' => [$url = Url::to(['catalog/index', ])]],  ////(['catalog/index', 'section' => 'main', 'element'=> 'main'])]],            // $url = Url::to(['post/view', 'id' => 100]);
-
-//['label' => 'Каталог', 'url' => [$url = Url::to(['catalog/index', 'section' => 'main', 'element'=> 'main' ])]], 
-  // ['label' => 'Главная', 'url' => ['/site/index']],
-    ['label' => 'О компании', 'url' => ['/site/about']],
-    ['label' => 'Контакты ', 'url' => ['/site/contact']],
-	
-];
- 
-if (Yii::$app->user->isGuest) {
-	
-	
-    $menuItems[] = ['label' => 'Регистрация', 'url' => ['/site/signup']];
-    $menuItems[] = ['label' => 'Войти', 'url' => ['/site/login']];
-	
-	 
-	
-} else {
-	
-	 $menuItems[] =['label' => 'Заказы', 'url' => [Url::to(['site/zakaz'])]];
-	// $menuItems[] =['label' => 'Корзина', 'url' => [Url::to(['site/basket'])]];
-	
+    $menuItems = [
+        ['label' => 'Каталог', 'url' => [$url = Url::to(['catalog/index', ])]],  ////(['catalog/index', 'section' => 'main', 'element'=> 'main'])]],            // $url = Url::to(['post/view', 'id' => 100]);
+        //['label' => 'Каталог', 'url' => [$url = Url::to(['catalog/index', 'section' => 'main', 'element'=> 'main' ])]], 
+        // ['label' => 'Главная', 'url' => ['/site/index']],
+        ['label' => 'О компании', 'url' => ['/site/about']],
+        ['label' => 'Контакты ', 'url' => ['/site/contact']],
+    ];
+    if (Yii::$app->user->isGuest) {
+        $menuItems[] = ['label' => 'Регистрация', 'url' => ['/site/signup']];
+        $menuItems[] = ['label' => 'Войти', 'url' => ['/site/login']];
+    } else {
+    $menuItems[] = ['label' => 'Заказы', 'url' => [Url::to(['sale/index'])]];
+	  $menuItems[] = ['label' => 'Профиль', 'url' => [Url::to(['site/profile'])]];
+    // $menuItems[] =['label' => 'Корзина', 'url' => [Url::to(['sale/basket'])]];
     $menuItems[] = '<li>'
         . Html::beginForm(['/site/logout'], 'post')
         . Html::submitButton(
-            'Выйти (' . Yii::$app->user->identity->username . ')',
-            ['class' => 'btn btn-link logout']
-        )
+        'Выйти (' . Yii::$app->user->identity->username . ')',
+        ['class' => 'btn btn-link logout']
+    )
         . Html::endForm()
         . '</li>';
-};
-
-$menuItems[] =['label' => 'Корзина', 'url' => [Url::to(['site/basket'])]];
- 
-echo Nav::widget([
-    'options' => ['class' => 'navbar-nav navbar-right'],
-    'items' => $menuItems,
-]);
- 
-NavBar::end();
-    ?>
-
-    <div class="container">
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
-        <?= Alert::widget() ?>
-        <?= $content ?>		
-    </div>
+    };
+    $menuItems[] = ['label' => 'Корзина', 'url' => [Url::to(['sale/basket'])]];
+    echo Nav::widget([
+        'options' => ['class' => 'navbar-nav navbar-right'],
+        'items' => $menuItems,
+    ]);
+    NavBar::end(); ?>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="breadcreambs-wrapper">
+                    <?= Breadcrumbs::widget([
+                            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                        ]) ?>
+                    <?= Alert::widget() ?>
+                </div>
+            </div>
+        </div>
+        <?= $content ?>
+        </div>
 </div>
-
 <footer class="footer">
-    <div class="container">
-        <p class="pull-left">&copy;   <?= LokalFileModel::getDataByKeyFromLocalfile('local_data_nameComppany').date('Y') ?></p>
-
-       
-    </div>
-	
-	<?//echo LokalFileModel::getDataByKeyFromLocalfile('local_data_nameComppany');?>
-</footer>
-
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <p><b>Footer</b></p>
+                </div>
+            </div>
+        </div>
+    </footer>
 <?php $this->endBody() ?>
 </body>
 </html>

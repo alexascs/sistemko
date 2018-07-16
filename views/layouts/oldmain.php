@@ -31,7 +31,7 @@ AppAsset::register($this);
         'brandLabel' => LokalFileModel::getDataByKeyFromLocalfile('local_data_nameComppany'),
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
-            'class' => 'navbar',
+            'class' => 'navbar navbar-fixed-top',
         ]
     ]);
     $menuItems = [
@@ -62,8 +62,7 @@ AppAsset::register($this);
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => $menuItems,
     ]);
-    NavBar::end();
-    ?>
+    NavBar::end(); ?>
 
     <div class="container">
         <?= Breadcrumbs::widget([

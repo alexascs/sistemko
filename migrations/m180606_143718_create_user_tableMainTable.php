@@ -15,7 +15,18 @@ class m180606_143718_create_user_tableMainTable extends Migration
 	
 	
 	
-	
+		
+			 $this->createTable('order', [
+            
+			'id' => $this->primaryKey(),
+			'userid'=> $this->integer(),
+			'usersessition'=> $this->string(),
+			'summ'=> $this->string(),
+			'datatime'=> $this->dateTime(),
+			'md5'=> $this->string(),
+			'coment'=> $this->string(),
+			'index'=> $this->string(),
+			]);
 
 		
 		
@@ -126,6 +137,7 @@ class m180606_143718_create_user_tableMainTable extends Migration
 			'order'=> $this->boolean(), 
 			'price'=> $this->float(), 
 			
+			
         ]);
 		
 		
@@ -195,6 +207,7 @@ class m180606_143718_create_user_tableMainTable extends Migration
     public function safeDown()
     {
 		
+		 $this->dropTable('order');
 		 $this->dropTable('image');
         $this->dropTable('user');
 		 $this->dropTable('section');
