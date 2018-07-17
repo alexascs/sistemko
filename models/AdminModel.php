@@ -97,67 +97,7 @@ class AdminModel extends Model
 	 
 	 
 	
-	 public function Uploadenom()
-     {
-					  $fp = fopen($_SERVER['DOCUMENT_ROOT'].'/upload/1c.csv', "r"); // Открываем файл в режиме чтения
-					
-					
-					$count=0;
-					$mes="";
-
-					 if ($fp) 
-					  {$mes='file is '.'<br>';
-						 while (!feof($fp))
-						 {      $count=$count+1; //if($count==20){break;};
-						 $mytext = fgets($fp, 999);
-						 
-					
-						 
-						 
-						 $ar=str_getcsv($mytext,";");
-						 
-						// print_r($ar);
-						 
-						 //if($count==300){break;};
-						 
-						   
-						   if(ltrim($ar[10])==1){  
-
-	                         $this->procceccArrayOfStingFromFile($ar);
-
-						   };
-						 
-					
-						 
-						 	// $mes=$mes.$mytext.$count.'  '.$ar[1].'<br>';       
-						  $mes=$mes.'  '.$ar[0].'<br>';    
-						 
-						  //$inc=0;
-						  //$imes='';
-						 // foreach(   $ar  as $t=>$r ){  $mes=$mes.'  '.$r.'  '.' = '.$t.' ';     };
-						 
-						 
-						 ///$mes=$mes.$count."<br />";
-						 }
-					   }
-					  else $mes="Ошибка при открытии файла";
-					  
-					  
-					  fclose($fp);
-		 
-		 
-		 $this->MakeSections();
-		 
-		 
-		 $this->fillidpInSectionTable();
-		 
-		 
-		  //$this->message=$this->message.$mes;
-		 
-		 
-		 
-		 
-     }
+	
 	
 	
 	public function procceccElementForSection($el){
@@ -321,7 +261,7 @@ class AdminModel extends Model
 		 	//if(!isset($element->xmlcodep)){continue;};
 				 
 
-				 $mes=$mes.$element->xmlcodep."  element <br>";
+				// $mes=$mes.$element->xmlcodep."  element <br>";
  
 				 $sectionsp = Section::find()
                  ->where(['xmlcode' =>$element->xmlcodep])
@@ -331,7 +271,7 @@ class AdminModel extends Model
 				
 				  if(isset($sectionsp)){
 					  
-					   $mes=$mes.$sectionsp->id."  section <br>";
+					 //  $mes=$mes.$sectionsp->id."  section <br>";
 				 
 					 
 					
@@ -415,7 +355,7 @@ class AdminModel extends Model
 									 
 										 $this->procceccArrayOfStingFromFileArtist($ar); 
 
-									  $mes=$mes.'  '.$ar[0].'<br>';    
+									//  $mes=$mes.'  '.$ar[0].'<br>';    
 									 
 									
 									 }
@@ -432,7 +372,7 @@ class AdminModel extends Model
 					 $this->fillidpInSectionTable();
 					 
 					 
-					  $this->message=$this->message.$mes;
+					 // $this->message=$this->message.$mes;
 					 
 		 
 		 
