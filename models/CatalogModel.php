@@ -107,7 +107,7 @@ class CatalogModel extends Model
 			  
 			  
 			  $sectionsNoPar = Section::find()
-				->where(['xmlcodep' =>'813a6dc9-d4bf-11e1-b131-001e5848397d' ,'active'=>true])  
+				->where(['xmlcodep' =>'not' ,'active'=>true])  
 				 ->all();
 				 
 			  if($sectionsNoPar){
@@ -193,7 +193,7 @@ class CatalogModel extends Model
 				
 				
 		         $elements = Element::find()
-				  ->where(['idp' =>$this->BottomArrCurSection ,'issection' =>false]) 
+				  ->where(['idp' =>$this->BottomArrCurSection ,'issection' =>false, 'active'=>1 ]) 
 				 ->orderBy("name")				
 				 ->offset( intval( $this->page*$this->elementPerPage))
 				  ->limit(intval($this->elementPerPage))
