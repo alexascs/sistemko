@@ -33,29 +33,71 @@ class CatalogController extends Controller
 
 		$model=new CatalogModel();
 
-		 $model->elementPerPage=50;
-
-		 
-		$model->load(Yii::$app->request->get(),'');
-
-	    $model->fillarrSectioons();
+		$model->elementPerPage=50;		 
 		
-		$model->fillTopArrCurSection(); 
-	   
-     $model->fillElementIdArray();
-	   
-	   
-	   $model->fillBottomArrCurSection();
-		$model->fillQuantitypageforqurientsection();
-		   
+		$model->load(Yii::$app->request->get(),'');
+		
+		//if set elementForAddToBasket
+		
+		
+		
+		if(isset($model->element)&&($model->element!=='non')){
+			
+			 
+			
+	    $model->setSectionIdForCurientElement();
+			
+        $model->fillarrSectioons();		
+		$model->fillTopArrCurSection(); 	     
+		$model->fillBottomArrCurSection();	   
+		$model->fillQuantitypageforqurientsection();	
+		$model->setVisibleForCurienSection();
+		$model->fillarrElements();
+		$model->fillImageForElementArray();		
+		$model->fillPriceForElementArray();		
+		$model->fillQuantityForElementArray();
+		
+		$model->fillArrProperyMetr();
+		
+		  
+		$model->fillArrayDataForCurientElement();
+		
+		
+		
+		return $this->render('detail', [
+         	'model' => $model,
+			]);
+		
+		
+		
+			
+			
+		}
+		
+		
+		
+		
+	    $model->fillarrSectioons();		
+		$model->fillTopArrCurSection();      
+		$model->fillBottomArrCurSection();   
+		$model->fillQuantitypageforqurientsection();			   
 	    $model->fillarrElements();
 			
-  $model->fillImageForElementArray();
-  $model->fillPriceForElementArray();
-  $model->fillQuantityForElementArray();	
-
-  	$model->setVisibleForCurienSection();
 			
+			
+		$model->fillImageForElementArray();		
+		$model->fillPriceForElementArray();		
+		$model->fillQuantityForElementArray();	
+
+		
+			
+		
+		$model->setVisibleForCurienSection();
+		  // echo '<br>prrrrrrrrrrrrrrrrrrge '.$model->quantityPageForCurSection.'<br>';
+			//echo 'alex controlersd '.$count.'<br>';
+			
+		 //  return;  
+		
 			
 		   return $this->render('catalog', [
          	'model' => $model,
@@ -71,51 +113,39 @@ class CatalogController extends Controller
 	
 		   $this->layout = 'ajaxl';
 		   $AjaxModel=new AjaxModel();
-	        $AjaxModel->message='addtobasketajax';
+	       $AjaxModel->message='addtobasketajax';
 	
-	//echo 'alex';
 	 
 	 $model=new BasketModel();
 	 $postArray= Yii::$app->request->post();
 	  if(isset ($postArray)){
 	   
-                            //element id
+                           
 							$model->elementForAddToBasket=$postArray['elementid']; 
                             $model->quantityForAddToBasket=$postArray['quanty']; 						
 						  
-                             //sessionid
+                           
 							$session = Yii::$app->session;
-							if ($session->isActive){ $AjaxModel->message= $AjaxModel->message.'  isAllaiv';
-
-									$AjaxModel->message= $AjaxModel->message.'<br>'.$session ->getId();
-
+							if ($session->isActive){
+								
 									$model->sessionForBasket=$session ->getId();
 
 							};
 
 							
-							//user id;
 							if (Yii::$app->user->isGuest){
 
-								$AjaxModel->message= $AjaxModel->message.'<br> user is guest';
-
 							}else{
-
-
-									$AjaxModel->message= $AjaxModel->message.'<br> user is user  ';
+ 
 									$model->userId=Yii::$app->user->id;
-
-
+ 
 							}
-							
-							
-							
-							
+							  
 							$model->addElementToBasket();
 
 					}
 	  
-	  $AjaxModel->message=$model->message;
+	       $AjaxModel->message=$model->message;
 	  
 	  
 		   return $this->render('catalogajax', [

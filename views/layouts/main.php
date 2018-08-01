@@ -20,13 +20,51 @@ $this->beginPage() ?>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&load=Geolink" type="text/javascript"></script>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
 <body>
 <?php $this->beginBody() ?>
-<!-- <div class="site-index-background"></div> -->
 <div class="wrapper">
+    <div class="header-info">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-4">
+                    <div class="header-info__item header-info__phone">
+                        <span class="header-info__icon">
+                            <i class="fas fa-phone-square"></i>
+                        </span>
+                        <span class="header-info__text">
+                            <?=LokalFileModel::getDataByKeyFromLocalfile('local_data_phone')?>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="header-info__item header-info__address">
+                        <span class="header-info__icon">
+                            <i class="fas fa-map-marked-alt"></i>
+                        </span>
+                        <span class="header-info__text" class="ymaps-geolink">
+                            <?=LokalFileModel::getDataByKeyFromLocalfile('local_data_adressComppany')?>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="header-info__item header-info__email">
+                        <a href="mailto:<?=LokalFileModel::getDataByKeyFromLocalfile('local_data_email')?>">
+                            <span class="header-info__icon">
+                                <i class="fas fa-envelope"></i>
+                            </span>
+                            <span class="header-info__text">
+                                <?=LokalFileModel::getDataByKeyFromLocalfile('local_data_email')?>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="header-background-wrapper image-responsive">
         <div class="container-fluid">
             <div class="row">
@@ -42,13 +80,16 @@ $this->beginPage() ?>
     <?php NavBar::begin([
             'brandLabel' => LokalFileModel::getDataByKeyFromLocalfile('local_data_nameComppany'),
             'brandUrl' => Yii::$app->homeUrl,
+            'options' => [
+                'class' => ''
+            ],
+            'innerContainerOptions' => [
+                'class' => 'container-fluid'
+            ]
         ]);
 
     $menuItems = [
-        ['label' => 'Каталог', 'url' => [$url = Url::to(['catalog/index', ])]],  ////(['catalog/index', 'section' => 'main', 'element'=> 'main'])]],            // $url = Url::to(['post/view', 'id' => 100]);
-        //['label' => 'Каталог', 'url' => [$url = Url::to(['catalog/index', 'section' => 'main', 'element'=> 'main' ])]], 
-        // ['label' => 'Главная', 'url' => ['/site/index']],
-        ['label' => 'О компании', 'url' => ['/site/about']],
+        ['label' => 'Каталог', 'url' => [$url = Url::to(['catalog/index', ])]],
         ['label' => 'Контакты ', 'url' => ['/site/contact']],
     ];
     if (Yii::$app->user->isGuest) {
@@ -56,13 +97,12 @@ $this->beginPage() ?>
         $menuItems[] = ['label' => 'Войти', 'url' => ['/site/login']];
     } else {
     $menuItems[] = ['label' => 'Заказы', 'url' => [Url::to(['sale/index'])]];
-	  $menuItems[] = ['label' => 'Профиль', 'url' => [Url::to(['site/profile'])]];
-    // $menuItems[] =['label' => 'Корзина', 'url' => [Url::to(['sale/basket'])]];
+	$menuItems[] = ['label' => 'Профиль', 'url' => [Url::to(['site/profile'])]];
     $menuItems[] = '<li>'
         . Html::beginForm(['/site/logout'], 'post')
         . Html::submitButton(
         'Выйти (' . Yii::$app->user->identity->username . ')',
-        ['class' => 'btn btn-link logout']
+        ['class' => 'btn btn-link logout header-logout-btn']
     )
         . Html::endForm()
         . '</li>';
@@ -88,10 +128,12 @@ $this->beginPage() ?>
         </div>
 </div>
 <footer class="footer">
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-xs-12">
-                    <p><b>Footer</b></p>
+                    <h3 class="footer-logo">
+                        <?=LokalFileModel::getDataByKeyFromLocalfile('local_data_nameComppany')?>
+                    </h3>
                 </div>
             </div>
         </div>

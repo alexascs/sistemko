@@ -10,37 +10,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 
-function printSection($arrSection)
-{
-	
-	
-	 
-	if (!isset($arrSection['id'])) {
-		return;
-	};
-	echo '<li>';
-	echo '<a  href='.Url::to(['catalog/index', 'section' => $arrSection['id'], 'element' => 'non', 'page' => 0, ]) . ' >' . $arrSection['name'].' <br>'.$arrSection['active']  . '</a>'; 
-	//echo 'top sections'.$arrSection;
-	if (isset($arrSection['childArray']) && count($arrSection['childArray']) > 0) {
-		echo '<ul>';
-		foreach ($arrSection['childArray'] as $andertopsection) {
-
-		
-		    //  foreach($model->TopArrCurSection  as $k=>$ar) {
-				//  if($ar==$andertopsection['id']){  printSection($andertopsection); continue; }
-				  
-				  
-			 
-		printSection($andertopsection);
-		
-		//if (  isset(array_search($andertopsection, $model->TopArrCurSection  )    )  		){       }
-		
-			
-		};
-		echo '</ul>';
-	}
-	echo '</li>';
-};
+ 
 
 
 
@@ -73,17 +43,96 @@ function printSection($arrSection)
     </p>
    
    
-   
-   	<?
-		echo '<ul>';
+   <?php
+				/* $mr = new CatalogMenuPresenter();
+				$mr->sArr= $model->arrSectioons;
+				$mr->oSecArr = $model->TopArrCurSection;
+				$mr->render(); */
+				
+function printSection($arrSection,$cursection)
+{
+	  	 
+	if (!isset($arrSection['id'])) {return;};
+		
+	if($arrSection['visible']){
+
+		$qv=0;
+		$q=0;
+
+		foreach($arrSection['childArray']  as $k=>$el){
+			if($el[visible])$qv=$qv+1;   
+			
+			$q=$q+1; 
+			;}
 
 
-		foreach ($catalogModel->arrSectioons as $topSection) {
-			printSection($topSection);
-		};
-		echo '</ul>';
-		?>
-   
+			$last='notlast';
+			if($q==0){$last='last';}
+
+			echo '<li class="'.$last.'">';
+				
+		echo '<a  href='.Url::to(['admin/index', 'section' => $arrSection['id'], 'element' => 'non', 'page' => 0, ]) . ' >' . $arrSection['name']. '</a>'; 
+
+		
+		 
+		
+			if(!$qv==0){
+
+			echo '<ul>';
+
+			foreach($arrSection['childArray'] as $key =>$children){printSection($children,$cursection);}
+
+			echo '</ul>';
+
+			}else{ if($q>0&&$arrSection['id']==$cursection){
+				
+				echo '<ul>';
+
+				 
+			     foreach($arrSection['childArray'] as $key =>$children){
+					 
+					 
+					 echo '<li>';
+					 echo '<a  href='.Url::to(['admin/index', 'section' => $children['id'], 'element' => 'non', 'page' => 0, ]) . ' >' . $children['name']. '</a>'; 
+					 echo '</li>';
+					 
+				 }
+
+			     echo '</ul>';
+				
+				
+			}
+				
+				
+				
+				
+			}
+			
+			
+			
+			
+		
+		echo '</li>';
+	
+	}
+	
+	 
+	 
+};
+				
+				
+				echo '<ul class="sidebar-menu__root">';
+
+
+				foreach ($catalogModel->arrSectioons as $topSection) {
+				printSection($topSection,$catalogModel->section);
+				};
+				
+				
+				echo '</ul>';
+				
+				
+			?>
    
    
    
@@ -112,6 +161,11 @@ function printSection($arrSection)
 			<p><div class="btn btn-default"  id="btn_admin_Uploadenomartist"  onclick='btn_admin_Uploadenomartist()'        >загрузить номенклатуру ходожника </div></p>
 		
 		
+		
+		
+			<p><div class="btn btn-default"  id="btn_admin_Makesectionfillid"  onclick='btn_admin_Makesectionfillid()'        >заполнить секции установить id</div></p>
+		
+		
 		<p><div class="btn btn-default"  id="btn_admin_Uploadequantityprice"  onclick='btn_admin_Uploadequantityprice()'        >загрузить количество цену </div></p>
 		
 			<p><div class="btn btn-default"  id="btn_admin_Activedeactivelemensection"  onclick='btn_admin_Activedeactivelemensection()'        >установить активнось элементов каталогов </div></p>
@@ -138,6 +192,25 @@ function printSection($arrSection)
  
  
 
+ function btn_admin_Makesectionfillid() {
+    
+
+   var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+   if (this.readyState == 4 && this.status == 200) {
+      mes( this.responseText);
+    }
+  };
+  xhttp.open("GET", "<?=Url::to(['admin/makesectionfillid']) ?>", true);
+  xhttp.send();
+
+ console.log("секции ")
+}
+
+ 
+ 
+ 
+ 
 function btn_admin_cleancache() {
     
 

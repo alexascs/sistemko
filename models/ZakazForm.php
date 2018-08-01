@@ -14,6 +14,7 @@ class ZakazForm extends Model
     public $email;
     public $phone;
     public $adress;
+	public $comment;
    
 
 
@@ -27,7 +28,9 @@ class ZakazForm extends Model
             [['name', 'email', 'phone',], 'required'],
             // email has to be a valid email address
             ['email', 'email'],
-            // verifyCode needs to be entered correctly
+			[['comment','adress',], 'string'],
+			
+            // verifyCode needs to be entered correctly string
           //  ['verifyCode', 'captcha'],
         ];
     }

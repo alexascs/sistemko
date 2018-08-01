@@ -173,6 +173,12 @@ class SaleController extends Controller
 		  
 		   $model= new OrderModel();
 		   
+				$model->name=$modelZakazForm->name;
+				$model->email=$modelZakazForm->email;
+				$model->phone=$modelZakazForm->phone;
+				$model->adress=$modelZakazForm->adress;
+				$model->comment=$modelZakazForm->comment;
+		   
 		   
 		   
 		   
@@ -180,11 +186,10 @@ class SaleController extends Controller
    
 		   
 		    $model->makeOrder();
-		 
+		
 		  return $this->render('orderdetail', [
-         'model' => $model, 
-		
-		
+			 'model' => $model,
+			 'catalogModel' => $catalogModel
 			]);
 		  
 		  
@@ -240,5 +245,54 @@ class SaleController extends Controller
     }
 	
 	
+	  public function actionOrderdetail()
+    {
+		$catalogModel=new CatalogModel();
+		$catalogModel->elementPerPage=50;
+	    $catalogModel->load(Yii::$app->request->get(),'');		
+	    $catalogModel->fillarrSectioons(); 
+		$catalogModel->fillTopArrCurSection();  
+	    $catalogModel->fillBottomArrCurSection();
+		$catalogModel->setVisibleForCurienSection();
+
+		   $get=Yii::$app->request->get();
+		   
+		  
+		    if( isset($get['md5'])){
+				
+				
+				$model= new OrderModel();
+					
+				$model->orderMd5=$get['md5'];	
+				$model->fillArrOrderElements();
+				  return $this->render('orderdetail', [
+				 'model' => $model,
+				 'catalogModel' => $catalogModel
+				 ]); 
+				
+				
+				
+			}else{
+				 
+				
+				
+			}
+		   
+		   
+		   
+   
+		   
+	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	}
 	
 }
